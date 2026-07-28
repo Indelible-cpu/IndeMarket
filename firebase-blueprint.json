@@ -1,0 +1,152 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profiles. Authenticated users can read all profiles. Users can only write their own profile.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["buyer", "seller", "admin"] },
+        "avatar": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "email", "role"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Products available in the marketplace.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "originalPrice": { "type": "number" },
+        "sellerId": { "type": "string" },
+        "sellerName": { "type": "string" },
+        "category": { "type": "string" },
+        "images": { "type": "array" },
+        "stock": { "type": "number" },
+        "rating": { "type": "number" },
+        "reviewsCount": { "type": "number" },
+        "isVerifiedSeller": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "description", "price", "sellerId", "category", "images", "stock"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Orders placed by buyers.",
+      "type": "object",
+      "properties": {
+        "buyerId": { "type": "string" },
+        "sellerId": { "type": "string" },
+        "items": { "type": "array" },
+        "total": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending_payment", "payment_sent", "shipped", "completed", "cancelled"] },
+        "shippingDetails": { "type": "object" },
+        "paymentMethod": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["buyerId", "sellerId", "items", "total", "status"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Product reviews written by buyers.",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userAvatar": { "type": "string" },
+        "rating": { "type": "number" },
+        "title": { "type": "string" },
+        "comment": { "type": "string" },
+        "isVerifiedBuyer": { "type": "boolean" },
+        "helpfulVotes": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["productId", "userId", "userName", "rating", "comment", "isVerifiedBuyer", "createdAt"]
+    },
+    "PriceAlert": {
+      "title": "PriceAlert",
+      "description": "Price drop notification preferences.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "productId": { "type": "string" },
+        "productName": { "type": "string" },
+        "productImage": { "type": "string" },
+        "initialPrice": { "type": "number" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "productId", "active", "createdAt"]
+    },
+    "InquiryConversation": {
+      "title": "InquiryConversation",
+      "description": "Chat threads between buyers and sellers regarding products.",
+      "type": "object",
+      "properties": {
+        "buyerId": { "type": "string" },
+        "buyerName": { "type": "string" },
+        "sellerId": { "type": "string" },
+        "sellerName": { "type": "string" },
+        "productId": { "type": "string" },
+        "productName": { "type": "string" },
+        "productImage": { "type": "string" },
+        "lastMessage": { "type": "string" },
+        "lastMessageAt": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["buyerId", "sellerId", "productId", "createdAt"]
+    },
+    "InquiryMessage": {
+      "title": "InquiryMessage",
+      "description": "Real-time chat messages for product inquiries.",
+      "type": "object",
+      "properties": {
+        "conversationId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "senderRole": { "type": "string", "enum": ["buyer", "seller"] },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["conversationId", "senderId", "senderName", "text", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles"
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Marketplace products"
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Marketplace orders"
+    },
+    "/reviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/Review" },
+      "description": "Product reviews"
+    },
+    "/priceAlerts/{alertId}": {
+      "schema": { "$ref": "#/entities/PriceAlert" },
+      "description": "Price drop notification alerts"
+    },
+    "/inquiry_conversations/{conversationId}": {
+      "schema": { "$ref": "#/entities/InquiryConversation" },
+      "description": "Inquiry chat conversations"
+    },
+    "/inquiry_messages/{messageId}": {
+      "schema": { "$ref": "#/entities/InquiryMessage" },
+      "description": "Inquiry chat messages"
+    }
+  }
+}

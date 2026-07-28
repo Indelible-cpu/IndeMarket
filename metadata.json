@@ -1,0 +1,6 @@
+{
+  "name": "IndeMarket",
+  "description": "A modern multi-vendor e-commerce marketplace.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
