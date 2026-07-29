@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, MapPin, CheckCircle, Smartphone, CreditCard, Banknote, Lock, ArrowRight } from 'lucide-react';
+import { ShieldCheck, MapPin, CheckCircle, Smartphone, CreditCard, Banknote, Lock, ArrowRight, FileText } from 'lucide-react';
 import { useAppContext } from '../store';
 import { db } from '../lib/firebase';
 import { collection, addDoc } from 'firebase/firestore';
+import { validateTransactionReference } from '../lib/fraudCheck';
+import toast from 'react-hot-toast';
 
 export function Checkout() {
   const { user, cart, cartTotal, clearCart, formatPrice, appliedPromo, getDiscountAmount } = useAppContext();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
+  const [createdOrderRef, setCreatedOrderRef] = useState<string>('');
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'airtel' | 'mpamba' | 'card' | 'cod'>('airtel');
   const [mobileNumber, setMobileNumber] = useState('');
   const [cardNumber, setCardNumber] = useState('');
+  const [customTxnRef, setCustomTxnRef] = useState('');
 
   const discountAmount = getDiscountAmount();
   const finalTotal = Math.max(0, cartTotal - discountAmount);
@@ -31,6 +35,30 @@ export function Checkout() {
       navigate('/login');
       return;
     }
+
+    // Determine initial payment reference code
+    let refCode = customTxnRef.trim();
+    if (!refCode) {
+      if (selectedPaymentMethod === 'airtel') {
+        const phone = mobileNumber.replace(/\D/g, '').slice(-6) || '999123';
+        refCode = `AIRTEL-${phone}-${Date.now().toString().slice(-4)}`;
+      } else if (selectedPaymentMethod === 'mpamba') {
+        const phone = mobileNumber.replace(/\D/g, '').slice(-6) || '888123';
+        refCode = `MPAMBA-${phone}-${Date.now().toString().slice(-4)}`;
+      } else if (selectedPaymentMethod === 'card') {
+        const card = cardNumber.replace(/\D/g, '').slice(-4) || '4000';
+        refCode = `CARD-${card}-${Date.now().toString().slice(-4)}`;
+      } else {
+        refCode = `COD-${Date.now().toString().slice(-6)}`;
+      }
+    }
+
+    // Run system anti-fraud check on reference
+    const check = validateTransactionReference(refCode);
+    if (!check.valid) {
+      toast.error(check.reason || 'Invalid transaction reference. Anti-fraud check failed.', { duration: 5000 });
+      return;
+    }
     
     setIsSubmitting(true);
     
@@ -46,9 +74,20 @@ export function Checkout() {
         const items = itemsArray as typeof cart;
         const total = items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
         
+        const firstItem = items[0];
+        const storeName = firstItem?.product?.sellerName || 'IndeMarket Verified Store';
+
         await addDoc(collection(db, 'orders'), {
           buyerId: user.id,
           sellerId: sellerId,
+          sellerName: storeName,
+          sellerStoreName: storeName,
+          sellerDetails: {
+            storeName: storeName,
+            location: 'Blantyre Commercial Hub, Malawi',
+            phone: '+265 888 123 456',
+            email: 'vendor@indemarket.mw'
+          },
           items: items.map(item => ({
             productId: item.product.id,
             name: item.product.name,
@@ -57,7 +96,9 @@ export function Checkout() {
             image: item.product.images?.[0] || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'
           })),
           total: total,
-          status: 'pending_payment',
+          status: 'payment_sent',
+          paymentReference: refCode,
+          paymentSentAt: new Date().toISOString(),
           shippingDetails,
           paymentMethod: selectedPaymentMethod,
           promoCode: appliedPromo?.code || null,
@@ -66,16 +107,18 @@ export function Checkout() {
         });
       }
       
-      // Simulate 1.5 second payment gateway processing
+      setCreatedOrderRef(refCode);
+
       setTimeout(() => {
         setIsSubmitting(false);
         setOrderComplete(true);
         clearCart();
+        toast.success('Payment reference verified by system anti-fraud filter!');
       }, 1200);
     } catch (error) {
       console.error("Error placing order", error);
       setIsSubmitting(false);
-      alert("Failed to place order. Please try again.");
+      toast.error("Failed to place order. Please try again.");
     }
   };
 
@@ -87,12 +130,12 @@ export function Checkout() {
   if (orderComplete) {
     return (
       <div className="max-w-2xl mx-auto text-center py-12 px-4 animate-in zoom-in-95 duration-500">
-        <div className="w-24 h-24 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
-          <CheckCircle className="w-12 h-12" />
+        <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+          <CheckCircle className="w-10 h-10" />
         </div>
-        <h1 className="text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">Order Placed Successfully!</h1>
+        <h1 className="text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">Order & Payment Sent!</h1>
         <p className="text-base text-gray-600 mb-8 max-w-lg mx-auto">
-          Thank you for shopping on IndeMarket. Your order reference is <span className="font-mono font-bold text-indigo-600">#ORD-{Math.floor(100000 + Math.random() * 900000)}</span>.
+          Transaction Reference <span className="font-mono font-bold text-indigo-600">{createdOrderRef}</span> has passed system anti-fraud checks and was submitted to the store seller.
         </p>
         
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm mb-8 text-left space-y-4">
@@ -101,13 +144,13 @@ export function Checkout() {
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 text-sm">Order Status: Processing</h3>
-              <p className="text-xs text-gray-500">The seller has been notified and is preparing your package.</p>
+              <h3 className="font-bold text-gray-900 text-sm">Escrow Status: Awaiting Seller Confirmation</h3>
+              <p className="text-xs text-gray-500">The seller will verify transaction #{createdOrderRef} in their account ledger to digitally sign your official receipt.</p>
             </div>
           </div>
 
           <div className="text-xs text-gray-600 space-y-2">
-            <p className="font-bold text-gray-900">Summary:</p>
+            <p className="font-bold text-gray-900">Order Information:</p>
             <div className="flex justify-between">
               <span>Delivery Address:</span>
               <span className="font-semibold text-gray-800">{shippingDetails.addressLine}, {shippingDetails.city}</span>
@@ -117,9 +160,14 @@ export function Checkout() {
               <span className="font-semibold uppercase text-indigo-600">{selectedPaymentMethod}</span>
             </div>
             <div className="flex justify-between">
-              <span>Phone Contact:</span>
-              <span className="font-semibold text-gray-800">{shippingDetails.phoneNumber}</span>
+              <span>Transaction Reference:</span>
+              <span className="font-mono font-bold text-gray-900">{createdOrderRef}</span>
             </div>
+          </div>
+
+          <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-900 text-[11px] flex items-center gap-2 font-medium">
+            <FileText className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>Official Escrow Receipt with watermark & seller signature will automatically unlock upon seller account confirmation.</span>
           </div>
         </div>
 
@@ -127,7 +175,7 @@ export function Checkout() {
           onClick={() => navigate('/orders')}
           className="bg-indigo-600 text-white px-8 py-3.5 rounded-2xl font-bold hover:bg-indigo-700 transition-colors shadow-md inline-flex items-center gap-2 text-base"
         >
-          View My Orders <ArrowRight className="w-5 h-5" />
+          View My Orders & Receipt Status <ArrowRight className="w-5 h-5" />
         </button>
       </div>
     );

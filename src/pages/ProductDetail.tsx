@@ -401,44 +401,6 @@ export function ProductDetail() {
 
           {/* Product Info */}
           <div className="p-8 lg:p-12 flex flex-col">
-            {(user?.role === 'seller' || user?.isSeller || user?.id === product.sellerId) && (
-              <div className="mb-4 p-3.5 bg-indigo-50 border border-indigo-200 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-indigo-900 text-xs font-semibold shadow-2xs">
-                <div className="flex items-center gap-2">
-                  <span className="text-base">🏪</span>
-                  <span>Seller Control: You own this store listing. You can edit or delete this item anytime.</span>
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <Link
-                    to="/seller"
-                    className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold flex items-center gap-1 transition-colors"
-                  >
-                    <Edit3 className="w-3.5 h-3.5" />
-                    <span>Edit in Seller Dashboard</span>
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={async () => {
-                      if (confirm(`Are you sure you want to delete "${product.name}" from store inventory?`)) {
-                        try {
-                          if (product.id) {
-                            await deleteDoc(doc(db, 'products', product.id));
-                          }
-                          toast.success('Product deleted from store inventory');
-                          window.location.href = '/seller';
-                        } catch (err) {
-                          toast.error('Failed to delete product');
-                        }
-                      }
-                    }}
-                    className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold flex items-center gap-1 transition-colors"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                    <span>Delete Listing</span>
-                  </button>
-                </div>
-              </div>
-            )}
-
             <div className="mb-2 flex items-center gap-2">
               <span className="px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-bold rounded-full uppercase tracking-wider">
                 {product.category}
@@ -578,6 +540,7 @@ export function ProductDetail() {
 
               {/* Social Media & Link Share Component */}
               <ShareButtons
+                productId={product.id}
                 productName={product.name}
                 productPrice={formatPrice(product.price)}
                 productImage={product.images?.[0]}

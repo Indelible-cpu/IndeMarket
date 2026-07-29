@@ -20,6 +20,7 @@ export function Wishlist() {
     }
 
     const fetchWishlist = async () => {
+      let remoteItems: any[] = [];
       try {
         setLoading(true);
         const q = query(
@@ -28,16 +29,32 @@ export function Wishlist() {
           orderBy('createdAt', 'desc')
         );
         const snapshot = await getDocs(q);
-        const items = snapshot.docs.map(doc => ({
+        remoteItems = snapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
         }));
-        setWishlistItems(items);
       } catch (error) {
-        console.error("Error fetching wishlist", error);
-      } finally {
-        setLoading(false);
+        // Fallback silently to localStorage
       }
+
+      // Merge with localStorage items
+      let localItems: any[] = [];
+      try {
+        const saved = localStorage.getItem(`inde_wishlist_${user.id}`);
+        if (saved) localItems = JSON.parse(saved);
+      } catch (e) {
+        // ignore
+      }
+
+      const combined = [...remoteItems];
+      localItems.forEach(li => {
+        if (!combined.some(ri => ri.productId === li.productId || ri.id === li.id)) {
+          combined.push(li);
+        }
+      });
+
+      setWishlistItems(combined);
+      setLoading(false);
     };
 
     fetchWishlist();
@@ -45,11 +62,26 @@ export function Wishlist() {
 
   const removeFromWishlist = async (id: string) => {
     try {
-      await deleteDoc(doc(db, 'wishlist', id));
-      setWishlistItems(prev => prev.filter(item => item.id !== id));
+      if (!id.startsWith('local-')) {
+        try {
+          await deleteDoc(doc(db, 'wishlist', id));
+        } catch (e) {
+          // ignore remote delete failure
+        }
+      }
+      
+      setWishlistItems(prev => {
+        const next = prev.filter(item => item.id !== id);
+        if (user) {
+          try {
+            localStorage.setItem(`inde_wishlist_${user.id}`, JSON.stringify(next));
+          } catch (e) {}
+        }
+        return next;
+      });
+      
       toast.success('Removed from wishlist');
     } catch (error) {
-      console.error("Error removing from wishlist", error);
       toast.error('Failed to remove item');
     }
   };

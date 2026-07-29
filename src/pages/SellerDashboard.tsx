@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { EscrowReceiptModal } from '../components/EscrowReceiptModal';
 import { 
   Store, 
   Package, 
@@ -228,8 +229,11 @@ export function SellerDashboard() {
         }
       }
 
-      // Combine with mockProducts seller filter
-      const mockSellerProds = mockProducts.map(p => ensureFiveImages(p));
+      // Combine with mockProducts strictly owned by this seller
+      const mockSellerProds = mockProducts
+        .filter(p => user?.id && (p.sellerId === user.id || p.sellerName === (user as any).storeName))
+        .map(p => ensureFiveImages(p));
+
       const combined = [...remoteProducts];
       mockSellerProds.forEach(mp => {
         if (!combined.some(c => c.id === mp.id)) {
@@ -240,7 +244,10 @@ export function SellerDashboard() {
       setSellerProducts(combined);
     } catch (err) {
       console.error('Error fetching products:', err);
-      setSellerProducts(mockProducts.map(p => ensureFiveImages(p)));
+      const mockSellerProds = mockProducts
+        .filter(p => user?.id && (p.sellerId === user.id || p.sellerName === (user as any).storeName))
+        .map(p => ensureFiveImages(p));
+      setSellerProducts(mockSellerProds);
     } finally {
       setProductsLoading(false);
     }
@@ -1431,58 +1438,40 @@ export function SellerDashboard() {
         </div>
       </div>
 
-      {/* Printable Receipt Modal */}
+      {/* Printable Escrow Receipt Modal */}
       {selectedOrderReceipt && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4" onClick={() => setSelectedOrderReceipt(null)}>
-          <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 space-y-5" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-              <div className="flex items-center gap-2">
-                <Printer className="w-5 h-5 text-indigo-600" />
-                <h3 className="font-extrabold text-gray-900 text-lg">Sales Invoice #{selectedOrderReceipt.id}</h3>
-              </div>
-              <button type="button" onClick={() => setSelectedOrderReceipt(null)} className="text-gray-400 hover:text-gray-600">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 text-xs space-y-2">
-              <p><strong className="text-gray-900">Seller:</strong> {storeSettings.storeName}</p>
-              <p><strong className="text-gray-900">Buyer:</strong> {selectedOrderReceipt.buyerName} ({selectedOrderReceipt.buyerPhone})</p>
-              <p><strong className="text-gray-900">Shipping Address:</strong> {selectedOrderReceipt.deliveryAddress}</p>
-              <p><strong className="text-gray-900">Payment Channel:</strong> {selectedOrderReceipt.paymentMethod}</p>
-              <p><strong className="text-gray-900">Status:</strong> {selectedOrderReceipt.status}</p>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-xs font-bold text-gray-700 uppercase tracking-wider">Ordered Items</p>
-              <div className="border border-gray-100 rounded-xl divide-y divide-gray-100 text-xs">
-                {selectedOrderReceipt.items.map((item: any, i: number) => (
-                  <div key={i} className="p-3 flex justify-between items-center">
-                    <span>{item.quantity}x {item.name}</span>
-                    <span className="font-bold text-gray-900">{formatPrice(item.price * item.quantity)}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center pt-2 border-t border-gray-100">
-              <span className="font-extrabold text-gray-900 text-sm">Total Invoice Paid</span>
-              <span className="font-extrabold text-indigo-600 text-xl">{formatPrice(selectedOrderReceipt.totalAmount)}</span>
-            </div>
-
-            <div className="flex justify-end gap-3 pt-2">
-              <button
-                type="button"
-                onClick={() => {
-                  window.print();
-                }}
-                className="px-5 py-2.5 bg-indigo-600 text-white font-bold rounded-xl text-xs hover:bg-indigo-700 shadow-md flex items-center gap-1.5"
-              >
-                <Printer className="w-4 h-4" /> Print / Save PDF
-              </button>
-            </div>
-          </div>
-        </div>
+        <EscrowReceiptModal
+          order={{
+            id: selectedOrderReceipt.id,
+            items: selectedOrderReceipt.items,
+            total: selectedOrderReceipt.totalAmount || selectedOrderReceipt.total,
+            status: (selectedOrderReceipt.status === 'Payment Verified' || selectedOrderReceipt.status === 'Shipped' || selectedOrderReceipt.status === 'Delivered' || selectedOrderReceipt.status === 'payment_received' || selectedOrderReceipt.status === 'shipped' || selectedOrderReceipt.status === 'completed') ? 'payment_received' : 'pending_payment',
+            paymentMethod: selectedOrderReceipt.paymentMethod || 'Airtel Money',
+            paymentReference: selectedOrderReceipt.paymentReference || `TXN-${selectedOrderReceipt.id}`,
+            sellerConfirmationDate: selectedOrderReceipt.sellerConfirmationDate || selectedOrderReceipt.createdAt || new Date().toISOString(),
+            sellerDetails: {
+              storeName: storeSettings.storeName,
+              location: storeSettings.storeLocation,
+              phone: storeSettings.phone,
+              email: storeSettings.email
+            },
+            shippingDetails: {
+              firstName: selectedOrderReceipt.buyerName?.split(' ')[0] || 'Customer',
+              lastName: selectedOrderReceipt.buyerName?.split(' ').slice(1).join(' ') || '',
+              addressLine: selectedOrderReceipt.deliveryAddress || 'Blantyre',
+              city: 'Blantyre',
+              phoneNumber: selectedOrderReceipt.buyerPhone || '+265 999 000 000'
+            },
+            sellerId: user?.id || 'seller_1',
+            sellerName: storeSettings.storeName,
+            createdAt: selectedOrderReceipt.createdAt || new Date().toISOString()
+          }}
+          onClose={() => setSelectedOrderReceipt(null)}
+          onConfirmPaymentBySeller={(orderId) => {
+            handleUpdateOrderStatus(orderId, 'Payment Verified');
+            setSelectedOrderReceipt(prev => prev ? { ...prev, status: 'Payment Verified' } : null);
+          }}
+        />
       )}
     </div>
   );

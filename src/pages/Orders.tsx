@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Package, MessageCircle, Clock, CheckCircle2, ChevronRight, Upload, XCircle, RefreshCw, AlertCircle } from 'lucide-react';
+import { Package, MessageCircle, Clock, CheckCircle2, ChevronRight, Upload, XCircle, RefreshCw, AlertCircle, FileText, ShieldCheck } from 'lucide-react';
 import { useAppContext } from '../store';
 import { db } from '../lib/firebase';
 import { collection, query, where, orderBy, onSnapshot, updateDoc, doc } from 'firebase/firestore';
 import { OrderTrackingVisualization } from '../components/OrderTrackingVisualization';
+import { EscrowReceiptModal } from '../components/EscrowReceiptModal';
+import { validateTransactionReference } from '../lib/fraudCheck';
 import toast from 'react-hot-toast';
 import { handleProductImageError, getProductFallbackImage } from '../lib/imageUtils';
 
@@ -17,6 +19,9 @@ export function Orders() {
   // Return Modal State
   const [returnOrderId, setReturnOrderId] = useState<string | null>(null);
   const [returnReason, setReturnReason] = useState('');
+
+  // Escrow Receipt Modal State
+  const [selectedReceiptOrder, setSelectedReceiptOrder] = useState<any | null>(null);
 
   useEffect(() => {
     if (!user) {
@@ -45,6 +50,43 @@ export function Orders() {
 
   const [paymentReference, setPaymentReference] = useState<{ [key: string]: string }>({});
 
+  const handleMarkPaymentSent = async (orderId: string) => {
+    const ref = (paymentReference[orderId] || '').trim();
+    const check = validateTransactionReference(ref);
+    if (!check.valid) {
+      toast.error(check.reason || 'Invalid transaction reference pattern', { duration: 5000 });
+      return;
+    }
+
+    await updateOrderStatus(orderId, 'payment_sent', {
+      paymentReference: ref,
+      paymentSentAt: new Date().toISOString()
+    });
+    toast.success('Payment reference verified by fraud filter and submitted to seller for account confirmation!');
+  };
+
+  const handleSellerConfirmPayment = async (orderId: string) => {
+    const targetOrder = orders.find(o => o.id === orderId);
+    if (!targetOrder) return;
+
+    const ref = targetOrder.paymentReference || 'TXN-CONFIRMED';
+    const storeName = (user as any)?.storeName || user?.name || 'Verified Vendor';
+
+    if (!confirm(`Confirm that transaction ID "${ref}" for ${formatPrice(targetOrder.total)} has been received in your store account?\n\nThis will digitally sign and release the official escrow receipt to the buyer.`)) {
+      return;
+    }
+
+    await updateOrderStatus(orderId, 'payment_received', {
+      sellerConfirmationDate: new Date().toISOString(),
+      sellerSignatureHash: `SIG-IND-${orderId.slice(0, 6).toUpperCase()}-${ref.toUpperCase()}`,
+      sellerStoreName: storeName,
+      sellerPhone: (user as any)?.phone || '+265 888 123 456',
+      sellerEmail: user?.email || 'seller@indemarket.mw'
+    });
+
+    toast.success('Transaction confirmed! Official signed escrow receipt generated with watermark.');
+  };
+
   const updateOrderStatus = async (orderId: string, newStatus: string, additionalData: any = {}) => {
     const targetOrder = orders.find(o => o.id === orderId);
     if (targetOrder) {
@@ -72,7 +114,6 @@ export function Orders() {
         ...additionalData
       });
       setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus, ...additionalData } : o));
-      toast.success(`Order status updated to ${newStatus.replace('_', ' ')}`);
     } catch (error) {
       console.error("Error updating order", error);
       toast.error("Failed to update status.");
@@ -154,11 +195,29 @@ export function Orders() {
 
             {/* Order Body */}
             <div className="p-6">
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <span className="font-medium">{user?.role === 'seller' ? 'Buyer ID:' : 'Seller ID:'}</span>
                   <span className="text-indigo-600">{user?.role === 'seller' ? order.buyerId : order.sellerId}</span>
                 </div>
+
+                {/* View Official Escrow Receipt Button */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedReceiptOrder(order)}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-2xs ${
+                    order.status === 'payment_received' || order.status === 'shipped' || order.status === 'completed'
+                      ? 'bg-emerald-50 border border-emerald-200 text-emerald-800 hover:bg-emerald-100'
+                      : 'bg-indigo-50 border border-indigo-200 text-indigo-800 hover:bg-indigo-100'
+                  }`}
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>
+                    {order.status === 'payment_received' || order.status === 'shipped' || order.status === 'completed'
+                      ? 'View Official Signed Receipt'
+                      : 'View Escrow Receipt (Draft)'}
+                  </span>
+                </button>
               </div>
 
               <div className="my-5">
@@ -192,25 +251,25 @@ export function Orders() {
               {user?.role === 'buyer' && (order.status === 'pending_payment' || order.status === 'payment_sent') && (
                 <div className="mt-8 pt-6 border-t border-gray-100 bg-yellow-50/50 -mx-6 -mb-6 px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex-1">
-                    <h4 className="font-bold text-gray-900 mb-1">Payment Status: {order.status === 'pending_payment' ? 'Awaiting Payment' : 'Reported Sent'}</h4>
-                    <p className="text-sm text-gray-600">Please send payment via arranged method or cancel if no longer needed.</p>
+                    <h4 className="font-bold text-gray-900 mb-1">Payment Status: {order.status === 'pending_payment' ? 'Awaiting Payment Reference' : 'Payment Reference Submitted'}</h4>
+                    <p className="text-xs text-gray-600">Enter your genuine mobile money or bank SMS transaction reference below. System anti-fraud will verify format before notifying seller.</p>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                     {order.status === 'pending_payment' && (
                       <div className="flex gap-2">
                         <input 
                           type="text" 
-                          placeholder="Payment Ref No." 
-                          className="px-4 py-2 border border-gray-200 rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-sm"
+                          placeholder="e.g. MPA-881930" 
+                          className="px-4 py-2 border border-gray-200 rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-sm font-mono"
                           value={paymentReference[order.id] || ''}
                           onChange={(e) => setPaymentReference({...paymentReference, [order.id]: e.target.value})}
                         />
                         <button 
-                          onClick={() => updateOrderStatus(order.id, 'payment_sent', { paymentReference: paymentReference[order.id] || 'Not provided' })} 
+                          onClick={() => handleMarkPaymentSent(order.id)} 
                           className="px-5 py-2 border border-transparent bg-indigo-600 text-white text-xs font-bold rounded-xl hover:bg-indigo-700 shadow-sm transition-colors whitespace-nowrap"
                           disabled={!paymentReference[order.id]}
                         >
-                          Mark Sent
+                          Submit & Notify Seller
                         </button>
                       </div>
                     )}
@@ -255,17 +314,21 @@ export function Orders() {
                 </div>
               )}
 
-              {user?.role === 'seller' && order.status === 'payment_sent' && (
+              {user?.role === 'seller' && (order.status === 'payment_sent' || order.status === 'pending_payment') && (
                 <div className="mt-8 pt-6 border-t border-gray-100 bg-blue-50/50 -mx-6 -mb-6 px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-1">Payment Reported Sent</h4>
-                    <p className="text-sm text-gray-600">Buyer claims to have sent payment. Verify and mark as received.</p>
-                    <p className="text-sm font-medium mt-2 p-2 bg-white rounded border border-blue-100 text-blue-800 break-all">
-                      Reference: {order.paymentReference || 'None provided'}
+                    <h4 className="font-bold text-gray-900 mb-1">Verify Transaction Reference</h4>
+                    <p className="text-xs text-gray-600">Check your bank or mobile money statement for this transaction ID:</p>
+                    <p className="text-sm font-mono font-bold mt-1.5 p-2 bg-white rounded-xl border border-blue-200 text-blue-900 inline-block">
+                      Ref: {order.paymentReference || 'Not submitted yet'}
                     </p>
                   </div>
-                  <button onClick={() => updateOrderStatus(order.id, 'payment_received')} className="w-full sm:w-auto px-6 py-2.5 bg-purple-600 text-white text-sm font-bold rounded-xl hover:bg-purple-700 shadow-sm transition-colors">
-                    Mark Payment Received
+                  <button
+                    onClick={() => handleSellerConfirmPayment(order.id)}
+                    disabled={!order.paymentReference}
+                    className="w-full sm:w-auto px-6 py-2.5 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white text-xs font-bold rounded-xl shadow-md transition-all"
+                  >
+                    Confirm Transaction & Issue Signed Receipt
                   </button>
                 </div>
               )}
@@ -273,10 +336,10 @@ export function Orders() {
               {user?.role === 'seller' && order.status === 'payment_received' && (
                 <div className="mt-8 pt-6 border-t border-gray-100 bg-purple-50/50 -mx-6 -mb-6 px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-1">Ready to Ship</h4>
-                    <p className="text-sm text-gray-600">Payment has been received. Please ship the order.</p>
+                    <h4 className="font-bold text-gray-900 mb-1">Payment Confirmed & Signed</h4>
+                    <p className="text-xs text-gray-600">Official receipt with seller signature released to buyer. Ready to dispatch package.</p>
                   </div>
-                  <button onClick={() => updateOrderStatus(order.id, 'shipped')} className="w-full sm:w-auto px-6 py-2.5 bg-indigo-600 text-white text-sm font-bold rounded-xl hover:bg-indigo-700 shadow-sm transition-colors">
+                  <button onClick={() => updateOrderStatus(order.id, 'shipped')} className="w-full sm:w-auto px-6 py-2.5 bg-indigo-600 text-white text-xs font-bold rounded-xl hover:bg-indigo-700 shadow-sm transition-colors">
                     Mark as Shipped
                   </button>
                 </div>
@@ -329,6 +392,24 @@ export function Orders() {
             </div>
           </form>
         </div>
+      )}
+
+      {/* Escrow Receipt Modal */}
+      {selectedReceiptOrder && (
+        <EscrowReceiptModal
+          order={selectedReceiptOrder}
+          onClose={() => setSelectedReceiptOrder(null)}
+          onConfirmPaymentBySeller={(orderId) => {
+            handleSellerConfirmPayment(orderId);
+            setSelectedReceiptOrder(prev => prev ? {
+              ...prev,
+              status: 'payment_received',
+              sellerConfirmationDate: new Date().toISOString(),
+              sellerSignatureHash: `SIG-IND-${orderId.slice(0,6).toUpperCase()}-${(prev.paymentReference || 'TXN').toUpperCase()}`,
+              sellerStoreName: (user as any)?.storeName || user?.name || 'Verified Vendor'
+            } : null);
+          }}
+        />
       )}
     </div>
   );

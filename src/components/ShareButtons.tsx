@@ -3,23 +3,32 @@ import { Share2, Copy, Check, ExternalLink } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface ShareButtonsProps {
+  productId?: string;
   productName: string;
   productPrice?: string;
   productImage?: string;
   className?: string;
 }
 
-export function ShareButtons({ productName, productPrice, productImage, className = '' }: ShareButtonsProps) {
+export function ShareButtons({ productId, productName, productPrice, productImage, className = '' }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
+  const [useOfficialDomain, setUseOfficialDomain] = useState(true);
 
-  const currentUrl = window.location.href;
-  const shareText = `Check out ${productName}${productPrice ? ` for ${productPrice}` : ''} on Inde Marketplace!`;
+  // Default to IndeMarket production system domain
+  const officialDomain = 'https://indemarket.mw';
+  const currentPath = productId ? `/product/${productId}` : window.location.pathname;
+  
+  const officialProductUrl = `${officialDomain}${currentPath}`;
+  const devPreviewUrl = window.location.href;
+
+  const currentUrl = useOfficialDomain ? officialProductUrl : devPreviewUrl;
+  const shareText = `Check out ${productName}${productPrice ? ` for ${productPrice}` : ''} on IndeMarket!`;
 
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(currentUrl);
       setCopied(true);
-      toast.success('Product link copied to clipboard!');
+      toast.success(`IndeMarket product link copied! (${useOfficialDomain ? 'indemarket.mw' : 'Preview URL'})`);
       setTimeout(() => setCopied(false), 2500);
     } catch (err) {
       toast.error('Failed to copy link');
@@ -65,6 +74,38 @@ export function ShareButtons({ productName, productPrice, productImage, classNam
             <span>More Options</span>
           </button>
         )}
+      </div>
+
+      {/* Direct Link Display Bar */}
+      <div className="mb-3 bg-white p-2 rounded-xl border border-gray-200 flex items-center justify-between gap-2 shadow-2xs">
+        <div className="flex items-center gap-1.5 overflow-hidden flex-1 min-w-0">
+          <span className="px-2 py-0.5 bg-indigo-100 text-indigo-700 text-[10px] font-bold rounded-md shrink-0 uppercase tracking-wide">
+            {useOfficialDomain ? 'IndeMarket' : 'Preview'}
+          </span>
+          <span className="text-xs text-gray-600 font-mono truncate select-all">
+            {currentUrl}
+          </span>
+        </div>
+        <div className="flex items-center gap-1 shrink-0">
+          <button
+            type="button"
+            onClick={() => setUseOfficialDomain(!useOfficialDomain)}
+            className="text-[10px] text-gray-500 hover:text-indigo-600 font-bold px-1.5 py-1 rounded hover:bg-gray-100 transition-colors"
+            title="Toggle between IndeMarket domain and preview URL"
+          >
+            {useOfficialDomain ? 'Switch to Dev URL' : 'Switch to IndeMarket'}
+          </button>
+          <button
+            type="button"
+            onClick={handleCopyLink}
+            className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all flex items-center gap-1 ${
+              copied ? 'bg-emerald-600 text-white' : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+            }`}
+          >
+            {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+            <span>{copied ? 'Copied' : 'Copy'}</span>
+          </button>
+        </div>
       </div>
 
       <div className="flex items-center gap-2 flex-wrap">
