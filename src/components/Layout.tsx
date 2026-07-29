@@ -302,15 +302,14 @@ export function Layout() {
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
-            <div className="hidden md:block"></div>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex justify-center space-x-6">
               <Link to="/about" className="text-sm text-gray-500 hover:text-gray-900">About</Link>
               <Link to="/support" className="text-sm text-gray-500 hover:text-gray-900">Support</Link>
               <Link to="/terms" className="text-sm text-gray-500 hover:text-gray-900">Terms</Link>
               <Link to="/privacy" className="text-sm text-gray-500 hover:text-gray-900">Privacy</Link>
             </div>
-            <p className="text-sm text-gray-400 text-center md:text-right">
+            <p className="text-sm text-gray-400 text-center sm:text-right">
               &copy; 2026 IndeMarket. Powered by Indelible Technologies. All rights reserved.
             </p>
           </div>
