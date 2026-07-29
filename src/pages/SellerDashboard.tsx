@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { EscrowReceiptModal } from '../components/EscrowReceiptModal';
+import { sendEscrowReceiptEmails } from '../lib/emailService';
 import { 
   Store, 
   Package, 
@@ -1469,6 +1470,32 @@ export function SellerDashboard() {
           onClose={() => setSelectedOrderReceipt(null)}
           onConfirmPaymentBySeller={(orderId) => {
             handleUpdateOrderStatus(orderId, 'Payment Verified');
+            
+            const confirmationDate = new Date().toISOString();
+            const ref = selectedOrderReceipt.paymentReference || `TXN-${orderId}`;
+            const signatureHash = `SIG-IND-${orderId.slice(0, 6).toUpperCase()}-${ref.toUpperCase()}`;
+
+            sendEscrowReceiptEmails({
+              orderId,
+              receiptNumber: `RCP-IND-${orderId.slice(0, 8).toUpperCase()}`,
+              buyerName: selectedOrderReceipt.buyerName || 'Valued Customer',
+              buyerEmail: selectedOrderReceipt.buyerEmail || 'customer@indemarket.mw',
+              buyerAddress: selectedOrderReceipt.deliveryAddress || 'Blantyre',
+              sellerStoreName: storeSettings.storeName,
+              sellerEmail: storeSettings.email || user?.email || 'vendor@indemarket.mw',
+              sellerPhone: storeSettings.phone || '+265 888 123 456',
+              paymentMethod: selectedOrderReceipt.paymentMethod || 'Airtel Money',
+              paymentReference: ref,
+              totalAmount: selectedOrderReceipt.totalAmount || selectedOrderReceipt.total || 0,
+              items: (selectedOrderReceipt.items || []).map((i: any) => ({
+                name: i.name,
+                quantity: i.quantity,
+                price: i.price
+              })),
+              confirmationDate,
+              securityHash: signatureHash
+            });
+
             setSelectedOrderReceipt(prev => prev ? { ...prev, status: 'Payment Verified' } : null);
           }}
         />

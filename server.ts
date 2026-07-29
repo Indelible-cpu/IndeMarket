@@ -16,39 +16,35 @@ async function startServer() {
 
   // Gemini API Endpoint for Related Products Recommendation
   app.post("/api/related-products", async (req, res) => {
-    try {
-      const { currentProduct, candidateProducts } = req.body;
-      if (!currentProduct) {
-        return res.status(400).json({ error: "Missing currentProduct parameter" });
-      }
+    const { currentProduct, candidateProducts } = req.body || {};
+    if (!currentProduct) {
+      return res.status(400).json({ error: "Missing currentProduct parameter" });
+    }
 
-      const apiKey = process.env.GEMINI_API_KEY;
-      if (!apiKey) {
-        console.warn("GEMINI_API_KEY environment variable is missing. Returning category fallback recommendations.");
-        const categoryMatches = (candidateProducts || [])
-          .filter((p: any) => p.id !== currentProduct.id)
-          .filter((p: any) => p.category === currentProduct.category)
-          .slice(0, 4);
+    const fallbackResponse = () => {
+      const categoryMatches = (candidateProducts || [])
+        .filter((p: any) => p.id !== currentProduct.id)
+        .filter((p: any) => p.category === currentProduct.category)
+        .slice(0, 4);
 
-        return res.json({
-          summaryInsight: `Top trending selections in ${currentProduct.category}`,
-          recommendations: categoryMatches.map((p: any) => ({
-            productId: p.id,
-            reason: `Popular choice in ${currentProduct.category}`,
-            matchScore: 85
-          })),
-          aiGenerated: false
-        });
-      }
-
-      const ai = new GoogleGenAI({
-        apiKey,
-        httpOptions: {
-          headers: {
-            'User-Agent': 'aistudio-build'
-          }
-        }
+      return res.json({
+        summaryInsight: `Top trending selections in ${currentProduct.category || 'Marketplace'}`,
+        recommendations: categoryMatches.map((p: any) => ({
+          productId: p.id,
+          reason: `Popular choice in ${currentProduct.category || 'this collection'}`,
+          matchScore: 85
+        })),
+        aiGenerated: false
       });
+    };
+
+    try {
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey || apiKey.trim() === "" || apiKey.includes("MY_GEMINI_API_KEY")) {
+        return fallbackResponse();
+      }
+
+      const ai = new GoogleGenAI({ apiKey });
 
       const catalogSummary = (candidateProducts || []).map((p: any) => ({
         id: p.id,
@@ -69,15 +65,15 @@ A user is currently viewing the following product:
 
 Analyze the current product's category, purpose, target audience, and description. Then review the candidate products catalog below and pick the top 4 most relevant related products.
 Selection criteria:
-1. High category relevance or direct complementary pairing (e.g. matching accessories, similar lifestyle tier, or direct alternatives).
-2. For each recommendation, output a concise 1-sentence explanation why it connects with the current product.
+1. High category relevance or direct complementary pairing.
+2. Output a concise 1-sentence explanation why it connects with the current product.
 3. Assign a match score percentage (integer between 78 and 98).
 
 Candidate Catalog:
 ${JSON.stringify(catalogSummary, null, 2)}`;
 
       const response = await ai.models.generateContent({
-        model: "gemini-3.6-flash",
+        model: "gemini-2.5-flash",
         contents: prompt,
         config: {
           responseMimeType: "application/json",
@@ -123,24 +119,9 @@ ${JSON.stringify(catalogSummary, null, 2)}`;
         recommendations: parsed.recommendations || [],
         aiGenerated: true
       });
-    } catch (err: any) {
-      console.error("Error generating Gemini related products:", err);
-      // Fallback response on error
-      const { currentProduct, candidateProducts } = req.body || {};
-      const fallbackList = (candidateProducts || [])
-        .filter((p: any) => p.id !== currentProduct?.id)
-        .filter((p: any) => p.category === currentProduct?.category)
-        .slice(0, 4);
-
-      return res.json({
-        summaryInsight: `Curated choices in ${currentProduct?.category || 'Marketplace'}`,
-        recommendations: fallbackList.map((p: any) => ({
-          productId: p.id,
-          reason: `Highly rated in ${p.category}`,
-          matchScore: 82
-        })),
-        aiGenerated: false
-      });
+    } catch (_err) {
+      // Return structured fallback recommendations seamlessly without crashing or throwing
+      return fallbackResponse();
     }
   });
 

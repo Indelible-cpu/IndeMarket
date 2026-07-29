@@ -174,13 +174,16 @@ export function Profile() {
         setOrdersLoading(true);
         const q = query(
           collection(db, 'orders'),
-          where('buyerId', '==', user.id),
-          orderBy('createdAt', 'desc'),
-          limit(3)
+          where('buyerId', '==', user.id)
         );
         const snapshot = await getDocs(q);
         const fetchedOrders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setRecentOrders(fetchedOrders);
+        fetchedOrders.sort((a: any, b: any) => {
+          const timeA = new Date(a.createdAt || 0).getTime();
+          const timeB = new Date(b.createdAt || 0).getTime();
+          return timeB - timeA;
+        });
+        setRecentOrders(fetchedOrders.slice(0, 3));
       } catch (error) {
         console.error("Error fetching recent orders:", error);
       } finally {

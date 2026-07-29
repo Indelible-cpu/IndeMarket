@@ -25,14 +25,18 @@ export function Wishlist() {
         setLoading(true);
         const q = query(
           collection(db, 'wishlist'),
-          where('userId', '==', user.id),
-          orderBy('createdAt', 'desc')
+          where('userId', '==', user.id)
         );
         const snapshot = await getDocs(q);
         remoteItems = snapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
         }));
+        remoteItems.sort((a: any, b: any) => {
+          const timeA = new Date(a.createdAt || 0).getTime();
+          const timeB = new Date(b.createdAt || 0).getTime();
+          return timeB - timeA;
+        });
       } catch (error) {
         // Fallback silently to localStorage
       }

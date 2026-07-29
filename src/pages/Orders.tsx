@@ -7,6 +7,7 @@ import { collection, query, where, orderBy, onSnapshot, updateDoc, doc } from 'f
 import { OrderTrackingVisualization } from '../components/OrderTrackingVisualization';
 import { EscrowReceiptModal } from '../components/EscrowReceiptModal';
 import { validateTransactionReference } from '../lib/fraudCheck';
+import { sendEscrowReceiptEmails } from '../lib/emailService';
 import toast from 'react-hot-toast';
 import { handleProductImageError, getProductFallbackImage } from '../lib/imageUtils';
 
@@ -32,12 +33,16 @@ export function Orders() {
     const isSeller = user.role === 'seller';
     const q = query(
       collection(db, 'orders'),
-      where(isSeller ? 'sellerId' : 'buyerId', '==', user.id),
-      orderBy('createdAt', 'desc')
+      where(isSeller ? 'sellerId' : 'buyerId', '==', user.id)
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const fetchedOrders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      fetchedOrders.sort((a: any, b: any) => {
+        const timeA = new Date(a.createdAt || a.paymentSentAt || 0).getTime();
+        const timeB = new Date(b.createdAt || b.paymentSentAt || 0).getTime();
+        return timeB - timeA;
+      });
       setOrders(fetchedOrders);
       setLoading(false);
     }, (error) => {
@@ -76,15 +81,44 @@ export function Orders() {
       return;
     }
 
+    const confirmationDate = new Date().toISOString();
+    const signatureHash = `SIG-IND-${orderId.slice(0, 6).toUpperCase()}-${ref.toUpperCase()}`;
+
     await updateOrderStatus(orderId, 'payment_received', {
-      sellerConfirmationDate: new Date().toISOString(),
-      sellerSignatureHash: `SIG-IND-${orderId.slice(0, 6).toUpperCase()}-${ref.toUpperCase()}`,
+      sellerConfirmationDate: confirmationDate,
+      sellerSignatureHash: signatureHash,
       sellerStoreName: storeName,
       sellerPhone: (user as any)?.phone || '+265 888 123 456',
       sellerEmail: user?.email || 'seller@indemarket.mw'
     });
 
     toast.success('Transaction confirmed! Official signed escrow receipt generated with watermark.');
+
+    // Dispatch automated email receipt to both buyer and seller
+    const buyerEmail = targetOrder.shippingDetails?.email || targetOrder.buyerEmail || user?.email || 'customer@indemarket.mw';
+    const sellerEmail = user?.email || 'vendor@indemarket.mw';
+    const buyerName = `${targetOrder.shippingDetails?.firstName || 'Valued'} ${targetOrder.shippingDetails?.lastName || 'Customer'}`.trim();
+
+    sendEscrowReceiptEmails({
+      orderId: targetOrder.id,
+      receiptNumber: `RCP-IND-${targetOrder.id.slice(0, 8).toUpperCase()}`,
+      buyerName,
+      buyerEmail,
+      buyerAddress: `${targetOrder.shippingDetails?.addressLine || 'Address'}, ${targetOrder.shippingDetails?.city || 'Blantyre'}`,
+      sellerStoreName: storeName,
+      sellerEmail,
+      sellerPhone: (user as any)?.phone || '+265 888 123 456',
+      paymentMethod: targetOrder.paymentMethod || 'Airtel Money',
+      paymentReference: ref,
+      totalAmount: targetOrder.total,
+      items: (targetOrder.items || []).map((i: any) => ({
+        name: i.name,
+        quantity: i.quantity,
+        price: i.price
+      })),
+      confirmationDate,
+      securityHash: signatureHash
+    });
   };
 
   const updateOrderStatus = async (orderId: string, newStatus: string, additionalData: any = {}) => {
