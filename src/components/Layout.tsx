@@ -310,7 +310,7 @@ export function Layout() {
               <Link to="/privacy" className="text-sm text-gray-500 hover:text-gray-900">Privacy</Link>
             </div>
             <p className="text-sm text-gray-400 text-center sm:text-right">
-              &copy; 2026. All rights reserved.
+              &copy; 2026 IndeMarket. Powered by Indelible Technologies. All rights reserved.
             </p>
           </div>
         </div>
