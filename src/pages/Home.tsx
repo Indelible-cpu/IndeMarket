@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Star, ShieldCheck, ShoppingCart } from 'lucide-react';
+import { Star, ShieldCheck, ShoppingCart, Eye } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { mockCategories, mockProducts } from '../mockData';
 import { useAppContext } from '../store';
@@ -169,6 +169,16 @@ export function Home() {
                       SALE
                     </div>
                   ) : null}
+                  <div className="absolute bottom-2 left-2 z-10">
+                    <Link
+                      to={`/product/${product.id}`}
+                      className="bg-black/60 hover:bg-indigo-600 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg backdrop-blur-md transition-colors flex items-center gap-1 shadow-xs"
+                      title="View all product images"
+                    >
+                      <Eye className="w-3 h-3" />
+                      <span>View</span>
+                    </Link>
+                  </div>
                   <div className="absolute top-3 right-3 z-10 flex flex-col gap-1.5">
                     <WishlistButton product={product} />
                     <button
@@ -215,17 +225,28 @@ export function Home() {
                         <span className="text-sm text-gray-400 line-through">{formatPrice(product.originalPrice)}</span>
                       )}
                     </div>
-                    {product.stock === 0 ? (
-                      <NotifyMeButton product={product} variant="compact" />
-                    ) : (
-                      <button
-                        onClick={() => addToCart(product)}
-                        className="p-3 bg-indigo-50 text-indigo-600 rounded-full hover:bg-indigo-600 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 shrink-0"
-                        aria-label="Add to cart"
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <Link
+                        to={`/product/${product.id}`}
+                        className="px-3 py-2 bg-gray-100 hover:bg-indigo-50 text-gray-700 hover:text-indigo-600 rounded-xl text-xs font-bold flex items-center gap-1 transition-colors"
+                        title="View product images and details"
                       >
-                        <ShoppingCart className="w-5 h-5" />
-                      </button>
-                    )}
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>View</span>
+                      </Link>
+                      {product.stock === 0 ? (
+                        <NotifyMeButton product={product} variant="compact" />
+                      ) : (
+                        <button
+                          onClick={() => addToCart(product)}
+                          className="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition-colors focus:outline-none shrink-0"
+                          aria-label="Add to cart"
+                          title="Buy or Add to Cart"
+                        >
+                          <ShoppingCart className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

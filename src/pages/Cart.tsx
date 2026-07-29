@@ -94,29 +94,65 @@ export function Cart() {
                 <h2 className="text-lg font-bold text-gray-900">Cart Items ({cart.length})</h2>
               </div>
 
-              {cart.map((item) => (
-                <div key={item.product.id} className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-                  <Link to={`/product/${item.product.id}`} className="block w-full sm:w-24 h-24 shrink-0 bg-gray-50 rounded-xl overflow-hidden relative group">
-                    <img
-                      src={item.product.images?.[0] || getProductFallbackImage(item.product.id || item.product.name)}
-                      alt={item.product.name}
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                      onError={(e) => handleProductImageError(e, item.product.id || item.product.name)}
-                    />
-                  </Link>
-                  
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-bold text-gray-900 mb-1 truncate">
-                      <Link to={`/product/${item.product.id}`} className="hover:text-indigo-600 transition-colors">
-                        {item.product.name}
+              {cart.map((item) => {
+                const productImages = item.product.images && item.product.images.length >= 5
+                  ? item.product.images
+                  : [
+                      item.product.images?.[0] || getProductFallbackImage(item.product.id),
+                      item.product.images?.[1] || getProductFallbackImage(`${item.product.id}-2`),
+                      item.product.images?.[2] || getProductFallbackImage(`${item.product.id}-3`),
+                      item.product.images?.[3] || getProductFallbackImage(`${item.product.id}-4`),
+                      item.product.images?.[4] || getProductFallbackImage(`${item.product.id}-5`),
+                    ];
+
+                return (
+                  <div key={item.product.id} className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                    <div className="flex flex-col gap-2 shrink-0 w-full sm:w-auto items-center sm:items-start">
+                      <Link to={`/product/${item.product.id}`} className="block w-28 h-28 shrink-0 bg-gray-50 rounded-2xl overflow-hidden relative group border border-gray-100 shadow-xs">
+                        <img
+                          src={productImages[0]}
+                          alt={item.product.name}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                          onError={(e) => handleProductImageError(e, item.product.id || item.product.name)}
+                        />
+                        <span className="absolute bottom-1 right-1 bg-black/60 backdrop-blur-xs text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md">
+                          5 Photos
+                        </span>
                       </Link>
-                    </h3>
-                    <p className="text-xs text-gray-500 mb-2">Seller: {item.product.sellerName}</p>
-                    <div className="text-lg font-bold text-indigo-600">
-                      {formatPrice(item.product.price)}
+
+                      {/* 5 Real Images Gallery Strip in Cart */}
+                      <div className="flex items-center gap-1.5 max-w-[112px] overflow-x-auto pb-1 scrollbar-none">
+                        {productImages.slice(0, 5).map((imgUrl, imgIdx) => (
+                          <Link
+                            key={imgIdx}
+                            to={`/product/${item.product.id}`}
+                            title={`View Photo ${imgIdx + 1}`}
+                            className="w-5 h-5 rounded-md overflow-hidden border border-gray-200 hover:border-indigo-500 shrink-0 transition-all hover:scale-110"
+                          >
+                            <img
+                              src={imgUrl}
+                              alt={`Product view ${imgIdx + 1}`}
+                              referrerPolicy="no-referrer"
+                              className="w-full h-full object-cover"
+                              onError={(e) => handleProductImageError(e, `${item.product.id}-${imgIdx}`)}
+                            />
+                          </Link>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                    
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg font-bold text-gray-900 mb-1 truncate">
+                        <Link to={`/product/${item.product.id}`} className="hover:text-indigo-600 transition-colors">
+                          {item.product.name}
+                        </Link>
+                      </h3>
+                      <p className="text-xs text-gray-500 mb-2">Seller: {item.product.sellerName}</p>
+                      <div className="text-lg font-bold text-indigo-600">
+                        {formatPrice(item.product.price)}
+                      </div>
+                    </div>
 
                   <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
                     <div className="flex items-center border border-gray-200 rounded-xl bg-gray-50">
@@ -153,7 +189,8 @@ export function Cart() {
                     </div>
                   </div>
                 </div>
-              ))}
+              );
+            })}
             </div>
           ) : (
             <div className="bg-white rounded-2xl p-6 border border-gray-100 text-center text-gray-500">

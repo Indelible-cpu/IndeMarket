@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Star, ShieldCheck, ShoppingCart, Truck, Shield, ArrowLeft, ZoomIn, Maximize2, X, ChevronLeft, ChevronRight, Sparkles, MessageSquare, Send } from 'lucide-react';
+import { Star, ShieldCheck, ShoppingCart, Truck, Shield, ArrowLeft, ZoomIn, ZoomOut, Maximize2, X, ChevronLeft, ChevronRight, Sparkles, MessageSquare, Send, Edit3, Trash2 } from 'lucide-react';
 import { useAppContext } from '../store';
-import { mockProducts } from '../mockData';
+import { mockProducts, ensureFiveImages } from '../mockData';
 import { db } from '../lib/firebase';
-import { doc, getDoc, collection, addDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, addDoc, deleteDoc } from 'firebase/firestore';
 import toast from 'react-hot-toast';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { WishlistButton } from '../components/WishlistButton';
@@ -34,9 +34,13 @@ export function ProductDetail() {
 
   // Zoom & Lightbox State
   const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(2.5);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [isFullscreenModalOpen, setIsFullscreenModalOpen] = useState(false);
+  const [fullscreenZoomed, setFullscreenZoomed] = useState(false);
+  const [fullscreenMousePos, setFullscreenMousePos] = useState({ x: 50, y: 50 });
   const imageContainerRef = useRef<HTMLDivElement>(null);
+  const fullscreenImageRef = useRef<HTMLDivElement>(null);
 
   const handleSendInquiry = async () => {
     if (!inquiryText.trim() || !product) return;
@@ -103,9 +107,26 @@ export function ProductDetail() {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!imageContainerRef.current) return;
     const rect = imageContainerRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
     setMousePos({ x, y });
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!imageContainerRef.current || e.touches.length === 0) return;
+    const touch = e.touches[0];
+    const rect = imageContainerRef.current.getBoundingClientRect();
+    const x = Math.max(0, Math.min(100, ((touch.clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(0, Math.min(100, ((touch.clientY - rect.top) / rect.height) * 100));
+    setMousePos({ x, y });
+  };
+
+  const handleFullscreenMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!fullscreenImageRef.current) return;
+    const rect = fullscreenImageRef.current.getBoundingClientRect();
+    const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+    setFullscreenMousePos({ x, y });
   };
 
   useEffect(() => {
@@ -116,15 +137,16 @@ export function ProductDetail() {
         const docRef = doc(db, 'products', id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setProduct({ id: docSnap.id, ...docSnap.data() });
+          const raw = { id: docSnap.id, ...docSnap.data() } as any;
+          setProduct(ensureFiveImages(raw));
         } else {
           const fallback = mockProducts.find(p => p.id === id);
-          if (fallback) setProduct(fallback);
+          if (fallback) setProduct(ensureFiveImages(fallback));
         }
       } catch (error: any) {
         console.error("Error fetching product", error);
         const fallback = mockProducts.find(p => p.id === id);
-        if (fallback) setProduct(fallback);
+        if (fallback) setProduct(ensureFiveImages(fallback));
         if (error?.code === 'unavailable') {
           console.error("Firestore is unavailable. Check network connection or firestoreDatabaseId.");
         }
@@ -198,15 +220,99 @@ export function ProductDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-2">
           {/* Product Image Gallery */}
           <div className="p-8 lg:p-12 bg-gray-50 flex flex-col items-center justify-center gap-6 select-none">
-            {/* Main Image with Lens Hover Zoom */}
+            {/* Zoom Controls & Level Switcher */}
+            <div className="w-full flex items-center justify-between px-1">
+              <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-2 py-1 rounded-xl shadow-xs border border-gray-200/80">
+                <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider px-1">Zoom:</span>
+                {[1.8, 2.5, 3.5].map((level) => (
+                  <button
+                    key={level}
+                    type="button"
+                    onClick={() => setZoomLevel(level)}
+                    className={`px-2 py-0.5 rounded-lg text-xs font-extrabold transition-all ${
+                      zoomLevel === level
+                        ? 'bg-indigo-600 text-white shadow-xs'
+                        : 'text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    {level}x
+                  </button>
+                ))}
+              </div>
+
+              <span className="text-xs font-semibold text-gray-500 flex items-center gap-1">
+                <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
+                Hover or Touch Image to Inspect
+              </span>
+            </div>
+
+            {/* Main Image with Lens Hover Zoom & Slide Controls */}
             <div
               ref={imageContainerRef}
               onMouseEnter={() => setIsZoomed(true)}
               onMouseLeave={() => setIsZoomed(false)}
               onMouseMove={handleMouseMove}
+              onTouchStart={(e) => {
+                setIsZoomed(true);
+                const touch = e.touches[0];
+                if (touch) {
+                  (imageContainerRef.current as any)['_startX'] = touch.clientX;
+                }
+              }}
+              onTouchEnd={(e) => {
+                setIsZoomed(false);
+                const touch = e.changedTouches[0];
+                const startX = (imageContainerRef.current as any)['_startX'];
+                if (touch && startX !== undefined && product?.images?.length) {
+                  const diffX = touch.clientX - startX;
+                  if (diffX < -40) {
+                    // Swipe left -> Next image
+                    setActiveImageIndex((prev) => (prev + 1) % product.images.length);
+                  } else if (diffX > 40) {
+                    // Swipe right -> Prev image
+                    setActiveImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length);
+                  }
+                }
+              }}
+              onTouchMove={handleTouchMove}
               onClick={() => setIsFullscreenModalOpen(true)}
               className="relative w-full flex items-center justify-center bg-white rounded-2xl shadow-sm p-4 overflow-hidden border border-gray-100 cursor-crosshair group transition-all"
             >
+              {/* Prev / Next Slider Arrows for Buyer */}
+              {product.images && product.images.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length);
+                    }}
+                    title="Previous photo (Slide)"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-2.5 bg-white/90 backdrop-blur-md hover:bg-white text-gray-800 hover:text-indigo-600 rounded-full shadow-lg border border-gray-200 transition-all transform hover:scale-110 active:scale-95"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveImageIndex((prev) => (prev + 1) % product.images.length);
+                    }}
+                    title="Next photo (Slide)"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-2.5 bg-white/90 backdrop-blur-md hover:bg-white text-gray-800 hover:text-indigo-600 rounded-full shadow-lg border border-gray-200 transition-all transform hover:scale-110 active:scale-95"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+
+                  {/* Photo Counter Badge */}
+                  <div className="absolute top-4 left-4 z-10 px-3 py-1 bg-black/60 backdrop-blur-md text-white text-xs font-bold rounded-full shadow-md flex items-center gap-1">
+                    <span>Photo {activeImageIndex + 1} of {product.images.length}</span>
+                    <span className="hidden sm:inline text-gray-300 ml-1">• Slide or tap</span>
+                  </div>
+                </>
+              )}
+
               <div className="relative w-full aspect-square overflow-hidden rounded-xl flex items-center justify-center">
                 <img
                   src={product.images?.[activeImageIndex] || product.images?.[0] || getProductFallbackImage(product.id || product.name)}
@@ -214,18 +320,33 @@ export function ProductDetail() {
                   referrerPolicy="no-referrer"
                   style={{
                     transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
-                    transform: isZoomed ? 'scale(2.4)' : 'scale(1.0)',
+                    transform: isZoomed ? `scale(${zoomLevel})` : 'scale(1.0)',
                   }}
                   className="w-full h-full object-cover transition-transform duration-150 ease-out pointer-events-none"
                   onError={(e) => handleProductImageError(e, product.id || product.name)}
                 />
+
+                {/* Magnifier Lens Reticle overlay when zoomed */}
+                {isZoomed && (
+                  <div
+                    className="absolute pointer-events-none border-2 border-indigo-500/80 rounded-full shadow-lg bg-indigo-500/10 backdrop-contrast-125 transition-all duration-75"
+                    style={{
+                      left: `${mousePos.x}%`,
+                      top: `${mousePos.y}%`,
+                      width: '90px',
+                      height: '90px',
+                      transform: 'translate(-50%, -50%)',
+                      boxShadow: '0 0 20px rgba(99, 102, 241, 0.35), inset 0 0 10px rgba(255, 255, 255, 0.5)'
+                    }}
+                  />
+                )}
               </div>
 
               {/* Hover Zoom & Expand Badges */}
               <div className="absolute top-4 right-4 flex items-center gap-2">
                 <span className={`px-3 py-1.5 bg-gray-900/80 backdrop-blur-md text-white text-xs font-semibold rounded-full flex items-center gap-1.5 transition-opacity duration-200 ${isZoomed ? 'opacity-100 shadow-md' : 'opacity-0 group-hover:opacity-100'}`}>
                   <ZoomIn className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>{isZoomed ? '2.4x Zoom' : 'Hover to Zoom'}</span>
+                  <span>{isZoomed ? `${zoomLevel}x Zooming` : 'Hover to Zoom'}</span>
                 </span>
                 <button
                   type="button"
@@ -242,7 +363,7 @@ export function ProductDetail() {
 
               {!isZoomed && (
                 <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md text-gray-700 text-xs px-3 py-1.5 rounded-full shadow-sm border border-gray-200/80 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Sparkles className="w-3.5 h-3.5 text-indigo-500" /> Move cursor over image to inspect detail
+                  <ZoomIn className="w-3.5 h-3.5 text-indigo-500" /> Move cursor or finger over image to magnify details
                 </div>
               )}
             </div>
@@ -280,6 +401,44 @@ export function ProductDetail() {
 
           {/* Product Info */}
           <div className="p-8 lg:p-12 flex flex-col">
+            {(user?.role === 'seller' || user?.isSeller || user?.id === product.sellerId) && (
+              <div className="mb-4 p-3.5 bg-indigo-50 border border-indigo-200 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-indigo-900 text-xs font-semibold shadow-2xs">
+                <div className="flex items-center gap-2">
+                  <span className="text-base">🏪</span>
+                  <span>Seller Control: You own this store listing. You can edit or delete this item anytime.</span>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Link
+                    to="/seller"
+                    className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold flex items-center gap-1 transition-colors"
+                  >
+                    <Edit3 className="w-3.5 h-3.5" />
+                    <span>Edit in Seller Dashboard</span>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      if (confirm(`Are you sure you want to delete "${product.name}" from store inventory?`)) {
+                        try {
+                          if (product.id) {
+                            await deleteDoc(doc(db, 'products', product.id));
+                          }
+                          toast.success('Product deleted from store inventory');
+                          window.location.href = '/seller';
+                        } catch (err) {
+                          toast.error('Failed to delete product');
+                        }
+                      }
+                    }}
+                    className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold flex items-center gap-1 transition-colors"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Delete Listing</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="mb-2 flex items-center gap-2">
               <span className="px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-bold rounded-full uppercase tracking-wider">
                 {product.category}
@@ -351,6 +510,18 @@ export function ProductDetail() {
             </p>
 
             <div className="mt-auto pt-8 border-t border-gray-100">
+              {!user && (
+                <div className="mb-4 p-3.5 bg-amber-50 border border-amber-200 rounded-2xl flex items-center justify-between gap-3 text-amber-900 text-xs font-semibold shadow-2xs">
+                  <div className="flex items-center gap-2">
+                    <span className="text-base">🔓</span>
+                    <span>You are browsing as a guest. Feel free to view all product photos! An account is required to buy items.</span>
+                  </div>
+                  <Link to="/login" className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold whitespace-nowrap transition-colors shrink-0">
+                    Sign In / Register
+                  </Link>
+                </div>
+              )}
+
               {product.stock > 0 ? (
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex items-center border border-gray-300 rounded-xl bg-white">
@@ -370,11 +541,18 @@ export function ProductDetail() {
                   </div>
                   
                   <button
-                    onClick={() => addToCart(product, quantity)}
+                    onClick={() => {
+                      if (!user) {
+                        toast.error('You must have an account to buy items! Please log in or sign up.', { icon: '🔒', duration: 4000 });
+                        window.location.pathname = '/login';
+                        return;
+                      }
+                      addToCart(product, quantity);
+                    }}
                     className="flex-1 bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
                   >
                     <ShoppingCart className="w-5 h-5" />
-                    <span>Add to Cart</span>
+                    <span>{user ? 'Add to Cart' : 'Log In to Buy'}</span>
                   </button>
                 </div>
               ) : (
@@ -473,31 +651,55 @@ export function ProductDetail() {
             </button>
           </div>
 
-          {/* Center Image Display */}
-          <div className="relative flex-1 w-full max-w-5xl flex items-center justify-center my-4 overflow-hidden">
+          {/* Center Image Display with Zoom */}
+          <div
+            ref={fullscreenImageRef}
+            onMouseEnter={() => setFullscreenZoomed(true)}
+            onMouseLeave={() => setFullscreenZoomed(false)}
+            onMouseMove={handleFullscreenMouseMove}
+            onClick={() => setFullscreenZoomed(!fullscreenZoomed)}
+            className="relative flex-1 w-full max-w-5xl flex items-center justify-center my-4 overflow-hidden cursor-zoom-in group"
+          >
             {product.images && product.images.length > 1 && (
               <button
-                onClick={() => setActiveImageIndex((prev) => (prev > 0 ? prev - 1 : product.images.length - 1))}
-                className="absolute left-2 sm:left-4 z-10 p-3 bg-black/50 hover:bg-black/80 text-white rounded-full transition-all border border-white/10 shadow-lg"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveImageIndex((prev) => (prev > 0 ? prev - 1 : product.images.length - 1));
+                }}
+                className="absolute left-2 sm:left-4 z-20 p-3 bg-black/60 hover:bg-black/90 text-white rounded-full transition-all border border-white/20 shadow-xl"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
             )}
 
-            <img
-              src={product.images?.[activeImageIndex] || product.images?.[0]}
-              alt={product.name}
-              className="max-h-[75vh] max-w-full object-contain rounded-2xl shadow-2xl transition-all duration-300"
-            />
+            <div className="relative overflow-hidden rounded-2xl max-h-[78vh] flex items-center justify-center">
+              <img
+                src={product.images?.[activeImageIndex] || product.images?.[0]}
+                alt={product.name}
+                style={{
+                  transformOrigin: `${fullscreenMousePos.x}% ${fullscreenMousePos.y}%`,
+                  transform: fullscreenZoomed ? 'scale(2.8)' : 'scale(1.0)',
+                }}
+                className="max-h-[78vh] max-w-full object-contain rounded-2xl shadow-2xl transition-transform duration-200 ease-out pointer-events-none"
+              />
+            </div>
 
             {product.images && product.images.length > 1 && (
               <button
-                onClick={() => setActiveImageIndex((prev) => (prev < product.images.length - 1 ? prev + 1 : 0))}
-                className="absolute right-2 sm:right-4 z-10 p-3 bg-black/50 hover:bg-black/80 text-white rounded-full transition-all border border-white/10 shadow-lg"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveImageIndex((prev) => (prev < product.images.length - 1 ? prev + 1 : 0));
+                }}
+                className="absolute right-2 sm:right-4 z-20 p-3 bg-black/60 hover:bg-black/90 text-white rounded-full transition-all border border-white/20 shadow-xl"
               >
                 <ChevronRight className="w-6 h-6" />
               </button>
             )}
+
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-md text-white text-xs px-4 py-1.5 rounded-full border border-white/10 flex items-center gap-2 pointer-events-none">
+              <ZoomIn className="w-3.5 h-3.5 text-indigo-400" />
+              <span>{fullscreenZoomed ? '2.8x Zoom Active (Move to inspect)' : 'Click or Hover to Zoom'}</span>
+            </div>
           </div>
 
           {/* Bottom Thumbnails Navigation */}

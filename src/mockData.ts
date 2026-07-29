@@ -77,7 +77,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Electronics',
-    images: ['https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&q=80',
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
+      'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&q=80',
+      'https://images.unsplash.com/photo-1527443195645-1133f7f28990?w=800&q=80',
+      'https://images.unsplash.com/photo-1595225476474-87563907a212?w=800&q=80'
+    ],
     stock: 15,
     rating: 4.8,
     reviewsCount: 124,
@@ -91,7 +97,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Electronics',
-    images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
+      'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&q=80',
+      'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&q=80',
+      'https://images.unsplash.com/photo-1527443195645-1133f7f28990?w=800&q=80',
+      'https://images.unsplash.com/photo-1595225476474-87563907a212?w=800&q=80'
+    ],
     stock: 30,
     rating: 4.5,
     reviewsCount: 89,
@@ -105,7 +117,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Electronics',
-    images: ['https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&q=80',
+      'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&q=80',
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
+      'https://images.unsplash.com/photo-1527443195645-1133f7f28990?w=800&q=80',
+      'https://images.unsplash.com/photo-1595225476474-87563907a212?w=800&q=80'
+    ],
     stock: 20,
     rating: 4.7,
     reviewsCount: 210,
@@ -120,7 +138,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Electronics',
-    images: ['https://images.unsplash.com/photo-1527443195645-1133f7f28990?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1527443195645-1133f7f28990?w=800&q=80',
+      'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&q=80',
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
+      'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&q=80',
+      'https://images.unsplash.com/photo-1595225476474-87563907a212?w=800&q=80'
+    ],
     stock: 15,
     rating: 4.8,
     reviewsCount: 124,
@@ -134,7 +158,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Electronics',
-    images: ['https://images.unsplash.com/photo-1595225476474-87563907a212?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1595225476474-87563907a212?w=800&q=80',
+      'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&q=80',
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
+      'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&q=80',
+      'https://images.unsplash.com/photo-1527443195645-1133f7f28990?w=800&q=80'
+    ],
     stock: 40,
     rating: 4.5,
     reviewsCount: 89,
@@ -148,7 +178,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Electronics',
-    images: ['https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80',
+      'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&q=80',
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
+      'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&q=80',
+      'https://images.unsplash.com/photo-1527443195645-1133f7f28990?w=800&q=80'
+    ],
     stock: 5,
     rating: 4.9,
     reviewsCount: 18,
@@ -165,7 +201,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Fashion',
-    images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80',
+      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80',
+      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
+      'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80',
+      'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=800&q=80'
+    ],
     stock: 50,
     rating: 4.2,
     reviewsCount: 45,
@@ -179,7 +221,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Fashion',
-    images: ['https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80',
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80',
+      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
+      'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80',
+      'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=800&q=80'
+    ],
     stock: 100,
     rating: 4.0,
     reviewsCount: 32,
@@ -194,7 +242,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Fashion',
-    images: ['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80',
+      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80',
+      'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80',
+      'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=800&q=80'
+    ],
     stock: 40,
     rating: 4.6,
     reviewsCount: 78,
@@ -208,7 +262,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Fashion',
-    images: ['https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80',
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80',
+      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80',
+      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
+      'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=800&q=80'
+    ],
     stock: 8,
     rating: 4.3,
     reviewsCount: 38,
@@ -223,7 +283,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Fashion',
-    images: ['https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=800&q=80',
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80',
+      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80',
+      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
+      'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80'
+    ],
     stock: 30,
     rating: 4.6,
     reviewsCount: 55,
@@ -237,7 +303,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Fashion',
-    images: ['https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800&q=80',
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80',
+      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80',
+      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
+      'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80'
+    ],
     stock: 25,
     rating: 4.7,
     reviewsCount: 61,
@@ -254,7 +326,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Home & Kitchen',
-    images: ['https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80',
+      'https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=800&q=80',
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80',
+      'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=800&q=80',
+      'https://images.unsplash.com/photo-1585515320310-259814833e62?w=800&q=80'
+    ],
     stock: 25,
     rating: 4.9,
     reviewsCount: 42,
@@ -268,7 +346,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Home & Kitchen',
-    images: ['https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=800&q=80',
+      'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80',
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80',
+      'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=800&q=80',
+      'https://images.unsplash.com/photo-1585515320310-259814833e62?w=800&q=80'
+    ],
     stock: 10,
     rating: 4.7,
     reviewsCount: 15,
@@ -282,7 +366,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Home & Kitchen',
-    images: ['https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80',
+      'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80',
+      'https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=800&q=80',
+      'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=800&q=80',
+      'https://images.unsplash.com/photo-1585515320310-259814833e62?w=800&q=80'
+    ],
     stock: 18,
     rating: 4.8,
     reviewsCount: 73,
@@ -297,7 +387,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Home & Kitchen',
-    images: ['https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=800&q=80',
+      'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80',
+      'https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=800&q=80',
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80',
+      'https://images.unsplash.com/photo-1585515320310-259814833e62?w=800&q=80'
+    ],
     stock: 12,
     rating: 4.9,
     reviewsCount: 94,
@@ -311,7 +407,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Home & Kitchen',
-    images: ['https://images.unsplash.com/photo-1585515320310-259814833e62?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1585515320310-259814833e62?w=800&q=80',
+      'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80',
+      'https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=800&q=80',
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80',
+      'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=800&q=80'
+    ],
     stock: 14,
     rating: 4.8,
     reviewsCount: 108,
@@ -325,7 +427,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Home & Kitchen',
-    images: ['https://images.unsplash.com/photo-1594212699903-ec8a3eca50f6?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f6?w=800&q=80',
+      'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80',
+      'https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=800&q=80',
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80',
+      'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=800&q=80'
+    ],
     stock: 30,
     rating: 4.6,
     reviewsCount: 82,
@@ -341,7 +449,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Beauty',
-    images: ['https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&q=80',
+      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80',
+      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800&q=80',
+      'https://images.unsplash.com/photo-1608248597261-83325805435f?w=800&q=80',
+      'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80'
+    ],
     stock: 100,
     rating: 4.8,
     reviewsCount: 215,
@@ -355,7 +469,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Beauty',
-    images: ['https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80',
+      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&q=80',
+      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800&q=80',
+      'https://images.unsplash.com/photo-1608248597261-83325805435f?w=800&q=80',
+      'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80'
+    ],
     stock: 50,
     rating: 4.4,
     reviewsCount: 92,
@@ -369,7 +489,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Beauty',
-    images: ['https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800&q=80',
+      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&q=80',
+      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80',
+      'https://images.unsplash.com/photo-1608248597261-83325805435f?w=800&q=80',
+      'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80'
+    ],
     stock: 45,
     rating: 4.5,
     reviewsCount: 67,
@@ -383,7 +509,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Beauty',
-    images: ['https://images.unsplash.com/photo-1608248597261-83325805435f?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1608248597261-83325805435f?w=800&q=80',
+      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&q=80',
+      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80',
+      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800&q=80',
+      'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80'
+    ],
     stock: 60,
     rating: 4.7,
     reviewsCount: 112,
@@ -397,7 +529,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Beauty',
-    images: ['https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80',
+      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&q=80',
+      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80',
+      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800&q=80',
+      'https://images.unsplash.com/photo-1608248597261-83325805435f?w=800&q=80'
+    ],
     stock: 35,
     rating: 4.9,
     reviewsCount: 130,
@@ -411,7 +549,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Beauty',
-    images: ['https://images.unsplash.com/photo-1567928269937-ae146e45b428?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1567928269937-ae146e45b428?w=800&q=80',
+      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&q=80',
+      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80',
+      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800&q=80',
+      'https://images.unsplash.com/photo-1608248597261-83325805435f?w=800&q=80'
+    ],
     stock: 40,
     rating: 4.6,
     reviewsCount: 84,
@@ -427,7 +571,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Sports',
-    images: ['https://images.unsplash.com/photo-1592432678016-e910b06b384e?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1592432678016-e910b06b384e?w=800&q=80',
+      'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80',
+      'https://images.unsplash.com/photo-1614632537197-38a17061c2bd?w=800&q=80',
+      'https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=800&q=80',
+      'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80'
+    ],
     stock: 20,
     rating: 4.7,
     reviewsCount: 64,
@@ -442,7 +592,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Sports',
-    images: ['https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80',
+      'https://images.unsplash.com/photo-1592432678016-e910b06b384e?w=800&q=80',
+      'https://images.unsplash.com/photo-1614632537197-38a17061c2bd?w=800&q=80',
+      'https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=800&q=80',
+      'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80'
+    ],
     stock: 12,
     rating: 4.8,
     reviewsCount: 51,
@@ -456,7 +612,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Sports',
-    images: ['https://images.unsplash.com/photo-1614632537197-38a17061c2bd?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1614632537197-38a17061c2bd?w=800&q=80',
+      'https://images.unsplash.com/photo-1592432678016-e910b06b384e?w=800&q=80',
+      'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80',
+      'https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=800&q=80',
+      'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80'
+    ],
     stock: 50,
     rating: 4.9,
     reviewsCount: 120,
@@ -470,7 +632,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Sports',
-    images: ['https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=800&q=80',
+      'https://images.unsplash.com/photo-1592432678016-e910b06b384e?w=800&q=80',
+      'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80',
+      'https://images.unsplash.com/photo-1614632537197-38a17061c2bd?w=800&q=80',
+      'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80'
+    ],
     stock: 80,
     rating: 4.6,
     reviewsCount: 95,
@@ -484,7 +652,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Sports',
-    images: ['https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80',
+      'https://images.unsplash.com/photo-1592432678016-e910b06b384e?w=800&q=80',
+      'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80',
+      'https://images.unsplash.com/photo-1614632537197-38a17061c2bd?w=800&q=80',
+      'https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=800&q=80'
+    ],
     stock: 45,
     rating: 4.8,
     reviewsCount: 88,
@@ -498,7 +672,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Sports',
-    images: ['https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80',
+      'https://images.unsplash.com/photo-1592432678016-e910b06b384e?w=800&q=80',
+      'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80',
+      'https://images.unsplash.com/photo-1614632537197-38a17061c2bd?w=800&q=80',
+      'https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=800&q=80'
+    ],
     stock: 65,
     rating: 4.5,
     reviewsCount: 42,
@@ -515,7 +695,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Automotive',
-    images: ['https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80',
+      'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80',
+      'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=80',
+      'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&q=80',
+      'https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&q=80'
+    ],
     stock: 22,
     rating: 4.7,
     reviewsCount: 56,
@@ -529,7 +715,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Automotive',
-    images: ['https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80',
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80',
+      'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=80',
+      'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&q=80',
+      'https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&q=80'
+    ],
     stock: 18,
     rating: 4.6,
     reviewsCount: 39,
@@ -543,7 +735,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Automotive',
-    images: ['https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=80',
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80',
+      'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80',
+      'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&q=80',
+      'https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&q=80'
+    ],
     stock: 25,
     rating: 4.4,
     reviewsCount: 28,
@@ -558,7 +756,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Automotive',
-    images: ['https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&q=80',
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80',
+      'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80',
+      'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=80',
+      'https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&q=80'
+    ],
     stock: 10,
     rating: 4.9,
     reviewsCount: 77,
@@ -572,7 +776,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Automotive',
-    images: ['https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&q=80',
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80',
+      'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80',
+      'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=80',
+      'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&q=80'
+    ],
     stock: 15,
     rating: 4.5,
     reviewsCount: 34,
@@ -586,7 +796,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Automotive',
-    images: ['https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=800&q=80',
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80',
+      'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80',
+      'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=80',
+      'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&q=80'
+    ],
     stock: 30,
     rating: 4.7,
     reviewsCount: 91,
@@ -602,7 +818,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Books',
-    images: ['https://images.unsplash.com/photo-1532012197267-da84d127e765?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=800&q=80',
+      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&q=80',
+      'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&q=80',
+      'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&q=80',
+      'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?w=800&q=80'
+    ],
     stock: 20,
     rating: 4.9,
     reviewsCount: 350,
@@ -616,7 +838,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Books',
-    images: ['https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&q=80',
+      'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=800&q=80',
+      'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&q=80',
+      'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&q=80',
+      'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?w=800&q=80'
+    ],
     stock: 45,
     rating: 5.0,
     reviewsCount: 420,
@@ -630,7 +858,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Books',
-    images: ['https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&q=80',
+      'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=800&q=80',
+      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&q=80',
+      'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&q=80',
+      'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?w=800&q=80'
+    ],
     stock: 50,
     rating: 4.8,
     reviewsCount: 310,
@@ -644,7 +878,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Books',
-    images: ['https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&q=80',
+      'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=800&q=80',
+      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&q=80',
+      'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&q=80',
+      'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?w=800&q=80'
+    ],
     stock: 25,
     rating: 4.7,
     reviewsCount: 180,
@@ -658,7 +898,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Books',
-    images: ['https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?w=800&q=80',
+      'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=800&q=80',
+      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&q=80',
+      'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&q=80',
+      'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&q=80'
+    ],
     stock: 35,
     rating: 4.9,
     reviewsCount: 260,
@@ -672,7 +918,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Books',
-    images: ['https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80',
+      'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=800&q=80',
+      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&q=80',
+      'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&q=80',
+      'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&q=80'
+    ],
     stock: 15,
     rating: 4.8,
     reviewsCount: 145,
@@ -688,7 +940,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Toys & Games',
-    images: ['https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800&q=80',
+      'https://images.unsplash.com/photo-1594787318286-3d835c1d207f?w=800&q=80',
+      'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=800&q=80',
+      'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80',
+      'https://images.unsplash.com/photo-1513883049090-d0b7439799bf?w=800&q=80'
+    ],
     stock: 35,
     rating: 4.9,
     reviewsCount: 88,
@@ -702,7 +960,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Toys & Games',
-    images: ['https://images.unsplash.com/photo-1594787318286-3d835c1d207f?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1594787318286-3d835c1d207f?w=800&q=80',
+      'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800&q=80',
+      'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=800&q=80',
+      'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80',
+      'https://images.unsplash.com/photo-1513883049090-d0b7439799bf?w=800&q=80'
+    ],
     stock: 20,
     rating: 4.7,
     reviewsCount: 54,
@@ -716,7 +980,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Toys & Games',
-    images: ['https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=800&q=80',
+      'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800&q=80',
+      'https://images.unsplash.com/photo-1594787318286-3d835c1d207f?w=800&q=80',
+      'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80',
+      'https://images.unsplash.com/photo-1513883049090-d0b7439799bf?w=800&q=80'
+    ],
     stock: 30,
     rating: 4.8,
     reviewsCount: 72,
@@ -730,7 +1000,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Toys & Games',
-    images: ['https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80',
+      'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800&q=80',
+      'https://images.unsplash.com/photo-1594787318286-3d835c1d207f?w=800&q=80',
+      'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=800&q=80',
+      'https://images.unsplash.com/photo-1513883049090-d0b7439799bf?w=800&q=80'
+    ],
     stock: 40,
     rating: 4.6,
     reviewsCount: 38,
@@ -744,7 +1020,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Toys & Games',
-    images: ['https://images.unsplash.com/photo-1513883049090-d0b7439799bf?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1513883049090-d0b7439799bf?w=800&q=80',
+      'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800&q=80',
+      'https://images.unsplash.com/photo-1594787318286-3d835c1d207f?w=800&q=80',
+      'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=800&q=80',
+      'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80'
+    ],
     stock: 22,
     rating: 4.5,
     reviewsCount: 49,
@@ -758,7 +1040,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Toys & Games',
-    images: ['https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=800&q=80',
+      'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800&q=80',
+      'https://images.unsplash.com/photo-1594787318286-3d835c1d207f?w=800&q=80',
+      'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=800&q=80',
+      'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80'
+    ],
     stock: 50,
     rating: 4.9,
     reviewsCount: 110,
@@ -774,7 +1062,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Health & Personal Care',
-    images: ['https://images.unsplash.com/photo-1559591937-e58cf18f5227?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1559591937-e58cf18f5227?w=800&q=80',
+      'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
+      'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=800&q=80',
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80',
+      'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&q=80'
+    ],
     stock: 30,
     rating: 4.8,
     reviewsCount: 95,
@@ -788,7 +1082,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Health & Personal Care',
-    images: ['https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
+      'https://images.unsplash.com/photo-1559591937-e58cf18f5227?w=800&q=80',
+      'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=800&q=80',
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80',
+      'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&q=80'
+    ],
     stock: 20,
     rating: 4.7,
     reviewsCount: 63,
@@ -802,7 +1102,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Health & Personal Care',
-    images: ['https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=800&q=80',
+      'https://images.unsplash.com/photo-1559591937-e58cf18f5227?w=800&q=80',
+      'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80',
+      'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&q=80'
+    ],
     stock: 45,
     rating: 4.6,
     reviewsCount: 82,
@@ -817,7 +1123,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Health & Personal Care',
-    images: ['https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80',
+      'https://images.unsplash.com/photo-1559591937-e58cf18f5227?w=800&q=80',
+      'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
+      'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=800&q=80',
+      'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&q=80'
+    ],
     stock: 15,
     rating: 4.9,
     reviewsCount: 104,
@@ -831,7 +1143,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Health & Personal Care',
-    images: ['https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&q=80',
+      'https://images.unsplash.com/photo-1559591937-e58cf18f5227?w=800&q=80',
+      'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
+      'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=800&q=80',
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80'
+    ],
     stock: 60,
     rating: 4.8,
     reviewsCount: 140,
@@ -845,7 +1163,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Health & Personal Care',
-    images: ['https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=800&q=80',
+      'https://images.unsplash.com/photo-1559591937-e58cf18f5227?w=800&q=80',
+      'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
+      'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=800&q=80',
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80'
+    ],
     stock: 35,
     rating: 4.7,
     reviewsCount: 58,
@@ -862,7 +1186,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Groceries',
-    images: ['https://images.unsplash.com/photo-1587049352847-4d4554abde95?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1587049352847-4d4554abde95?w=800&q=80',
+      'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&q=80',
+      'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800&q=80',
+      'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=800&q=80',
+      'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&q=80'
+    ],
     stock: 120,
     rating: 4.8,
     reviewsCount: 42,
@@ -876,7 +1206,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Groceries',
-    images: ['https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&q=80',
+      'https://images.unsplash.com/photo-1587049352847-4d4554abde95?w=800&q=80',
+      'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800&q=80',
+      'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=800&q=80',
+      'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&q=80'
+    ],
     stock: 80,
     rating: 4.9,
     reviewsCount: 165,
@@ -890,7 +1226,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Groceries',
-    images: ['https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800&q=80',
+      'https://images.unsplash.com/photo-1587049352847-4d4554abde95?w=800&q=80',
+      'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&q=80',
+      'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=800&q=80',
+      'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&q=80'
+    ],
     stock: 50,
     rating: 4.8,
     reviewsCount: 89,
@@ -904,7 +1246,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Groceries',
-    images: ['https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=800&q=80',
+      'https://images.unsplash.com/photo-1587049352847-4d4554abde95?w=800&q=80',
+      'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&q=80',
+      'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800&q=80',
+      'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&q=80'
+    ],
     stock: 90,
     rating: 4.9,
     reviewsCount: 78,
@@ -918,7 +1266,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Groceries',
-    images: ['https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&q=80',
+      'https://images.unsplash.com/photo-1587049352847-4d4554abde95?w=800&q=80',
+      'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&q=80',
+      'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800&q=80',
+      'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=800&q=80'
+    ],
     stock: 150,
     rating: 5.0,
     reviewsCount: 210,
@@ -932,7 +1286,13 @@ export const mockProducts: Product[] = [
     sellerId: 's2',
     sellerName: 'Fashion Hub',
     category: 'Groceries',
-    images: ['https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80',
+      'https://images.unsplash.com/photo-1587049352847-4d4554abde95?w=800&q=80',
+      'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&q=80',
+      'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800&q=80',
+      'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=800&q=80'
+    ],
     stock: 40,
     rating: 4.8,
     reviewsCount: 115,
@@ -949,7 +1309,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Phone Accessories',
-    images: ['https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&q=80',
+      'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=800&q=80',
+      'https://images.unsplash.com/photo-1541877944-ac82a091518a?w=800&q=80',
+      'https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?w=800&q=80',
+      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800&q=80'
+    ],
     stock: 35,
     rating: 4.8,
     reviewsCount: 94,
@@ -963,7 +1329,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Phone Accessories',
-    images: ['https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=800&q=80',
+      'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&q=80',
+      'https://images.unsplash.com/photo-1541877944-ac82a091518a?w=800&q=80',
+      'https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?w=800&q=80',
+      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800&q=80'
+    ],
     stock: 100,
     rating: 4.7,
     reviewsCount: 142,
@@ -977,7 +1349,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Phone Accessories',
-    images: ['https://images.unsplash.com/photo-1541877944-ac82a091518a?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1541877944-ac82a091518a?w=800&q=80',
+      'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&q=80',
+      'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=800&q=80',
+      'https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?w=800&q=80',
+      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800&q=80'
+    ],
     stock: 60,
     rating: 4.6,
     reviewsCount: 88,
@@ -991,7 +1369,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Phone Accessories',
-    images: ['https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?w=800&q=80',
+      'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&q=80',
+      'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=800&q=80',
+      'https://images.unsplash.com/photo-1541877944-ac82a091518a?w=800&q=80',
+      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800&q=80'
+    ],
     stock: 45,
     rating: 4.9,
     reviewsCount: 110,
@@ -1005,7 +1389,13 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Phone Accessories',
-    images: ['https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800&q=80',
+      'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&q=80',
+      'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=800&q=80',
+      'https://images.unsplash.com/photo-1541877944-ac82a091518a?w=800&q=80',
+      'https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?w=800&q=80'
+    ],
     stock: 80,
     rating: 4.8,
     reviewsCount: 165,
@@ -1020,10 +1410,85 @@ export const mockProducts: Product[] = [
     sellerId: 's1',
     sellerName: 'Tech Store Mw',
     category: 'Phone Accessories',
-    images: ['https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=800&q=80'],
+    images: [
+      'https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=800&q=80',
+      'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&q=80',
+      'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=800&q=80',
+      'https://images.unsplash.com/photo-1541877944-ac82a091518a?w=800&q=80',
+      'https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?w=800&q=80'
+    ],
     stock: 40,
     rating: 4.7,
     reviewsCount: 76,
     isVerifiedSeller: true,
   },
 ];
+
+
+export const CATEGORY_IMAGE_POOLS: Record<string, string[]> = {
+  Electronics: [
+    'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&q=80',
+    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
+    'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&q=80',
+    'https://images.unsplash.com/photo-1527443195645-1133f7f28990?w=800&q=80',
+    'https://images.unsplash.com/photo-1595225476474-87563907a212?w=800&q=80',
+    'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80',
+  ],
+  Fashion: [
+    'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80',
+    'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80',
+    'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
+    'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80',
+    'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=800&q=80',
+  ],
+  'Home & Kitchen': [
+    'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80',
+    'https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=800&q=80',
+    'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80',
+    'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=800&q=80',
+    'https://images.unsplash.com/photo-1585515320310-259814833e62?w=800&q=80',
+  ],
+  Beauty: [
+    'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&q=80',
+    'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80',
+    'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800&q=80',
+    'https://images.unsplash.com/photo-1608248597261-83325805435f?w=800&q=80',
+    'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80',
+  ],
+  General: [
+    'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=800&q=80',
+    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
+    'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80',
+    'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80',
+    'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=800&q=80',
+  ],
+};
+
+export function ensureFiveImages<T extends { category?: string; images?: string[] }>(product: T): T {
+  if (!product) return product;
+  const existing = Array.isArray(product.images) ? product.images.filter((img) => typeof img === 'string' && img.trim().length > 0) : [];
+  
+  if (existing.length >= 5) {
+    return { ...product, images: existing };
+  }
+
+  const mainImg = existing[0] || 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=800&q=80';
+  const pool = CATEGORY_IMAGE_POOLS[product.category || 'General'] || CATEGORY_IMAGE_POOLS.General;
+
+  const result = [...existing];
+  let poolIdx = 0;
+  while (result.length < 5) {
+    const candidate = pool[poolIdx % pool.length];
+    if (!result.includes(candidate)) {
+      result.push(candidate);
+    } else {
+      result.push();
+    }
+    poolIdx++;
+  }
+
+  return {
+    ...product,
+    images: result,
+  };
+}

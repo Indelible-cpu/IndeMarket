@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import toast from 'react-hot-toast';
-import { User, Product, CartItem } from './mockData';
+import { User, Product, CartItem, ensureFiveImages } from './mockData';
 import { auth, db } from './lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
@@ -135,16 +135,27 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const addToCart = (product: Product, quantity: number = 1) => {
+    if (!user) {
+      toast.error('Account required to buy products! Please log in or register.', {
+        icon: '🔒',
+        duration: 4000,
+        id: 'auth-required'
+      });
+      window.location.pathname = '/login';
+      return;
+    }
+
+    const formattedProduct = ensureFiveImages(product);
     setCart((prev) => {
-      const existing = prev.find((item) => item.product.id === product.id);
+      const existing = prev.find((item) => item.product.id === formattedProduct.id);
       if (existing) {
         return prev.map((item) =>
-          item.product.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
+          item.product.id === formattedProduct.id
+            ? { ...item, product: formattedProduct, quantity: item.quantity + quantity }
             : item
         );
       }
-      return [...prev, { product, quantity }];
+      return [...prev, { product: formattedProduct, quantity }];
     });
     toast.success('Added to cart!');
   };

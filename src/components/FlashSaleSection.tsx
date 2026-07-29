@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '../mockData';
 import { useAppContext } from '../store';
-import { Flame, Clock, ShoppingBag, ArrowRight } from 'lucide-react';
+import { Flame, Clock, ShoppingBag, ArrowRight, Eye } from 'lucide-react';
 import { handleProductImageError, getProductFallbackImage } from '../lib/imageUtils';
 
 interface FlashSaleProps {
@@ -134,14 +134,25 @@ export function FlashSaleSection({ products }: FlashSaleProps) {
                 </div>
               </div>
 
-              <button
-                onClick={() => addToCart(product)}
-                disabled={product.stock === 0}
-                className="w-full bg-gray-900 hover:bg-rose-600 text-white font-semibold text-xs py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors duration-200"
-              >
-                <ShoppingBag className="w-3.5 h-3.5" />
-                <span>Claim Deal</span>
-              </button>
+              <div className="grid grid-cols-2 gap-2 mt-auto">
+                <Link
+                  to={`/product/${product.id}`}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs py-2.5 rounded-xl flex items-center justify-center gap-1 transition-colors"
+                  title="View all photos and details"
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  <span>View</span>
+                </Link>
+                <button
+                  onClick={() => addToCart(product)}
+                  disabled={product.stock === 0}
+                  className="bg-gray-900 hover:bg-rose-600 text-white font-bold text-xs py-2.5 rounded-xl flex items-center justify-center gap-1 transition-colors duration-200 disabled:opacity-50"
+                  title="Claim deal or add to cart"
+                >
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                  <span>Claim</span>
+                </button>
+              </div>
             </div>
           );
         })}

@@ -46,6 +46,25 @@ export function Orders() {
   const [paymentReference, setPaymentReference] = useState<{ [key: string]: string }>({});
 
   const updateOrderStatus = async (orderId: string, newStatus: string, additionalData: any = {}) => {
+    const targetOrder = orders.find(o => o.id === orderId);
+    if (targetOrder) {
+      if (targetOrder.status === newStatus) {
+        toast.error(`It's already done! Order is already marked as ${newStatus.replace('_', ' ')}.`, {
+          id: `already-done-${orderId}-${newStatus}`,
+          icon: 'ℹ️'
+        });
+        return;
+      }
+      if (newStatus === 'shipped' && (targetOrder.status === 'shipped' || targetOrder.status === 'completed')) {
+        toast.error(`It's already done! Order is already shipped.`, { id: `already-done-${orderId}` });
+        return;
+      }
+      if (newStatus === 'payment_received' && (targetOrder.status === 'payment_received' || targetOrder.status === 'shipped' || targetOrder.status === 'completed')) {
+        toast.error(`It's already done! Payment is already marked as received.`, { id: `already-done-${orderId}` });
+        return;
+      }
+    }
+
     try {
       await updateDoc(doc(db, 'orders', orderId), { 
         status: newStatus, 

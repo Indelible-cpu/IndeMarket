@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Star, ShieldCheck, ShoppingCart, Filter, X } from 'lucide-react';
+import { Star, ShieldCheck, ShoppingCart, Filter, X, Eye } from 'lucide-react';
 import { mockCategories, mockProducts } from '../mockData';
 import { useAppContext } from '../store';
 import { db } from '../lib/firebase';
@@ -350,16 +350,27 @@ export function Search() {
                       <div className="flex flex-col">
                         <span className="text-base sm:text-xl font-bold text-gray-900">{formatPrice(product.price)}</span>
                       </div>
-                      {product.stock === 0 ? (
-                        <NotifyMeButton product={product} variant="compact" />
-                      ) : (
-                        <button
-                          onClick={() => addToCart(product)}
-                          className="p-2.5 sm:p-3 bg-indigo-50 text-indigo-600 rounded-full hover:bg-indigo-600 hover:text-white transition-colors focus:outline-none shrink-0"
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <Link
+                          to={`/product/${product.id}`}
+                          className="px-2.5 py-1.5 bg-gray-100 hover:bg-indigo-50 text-gray-700 hover:text-indigo-600 rounded-xl text-xs font-bold flex items-center gap-1 transition-colors"
+                          title="View product images and details"
                         >
-                          <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
-                        </button>
-                      )}
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>View</span>
+                        </Link>
+                        {product.stock === 0 ? (
+                          <NotifyMeButton product={product} variant="compact" />
+                        ) : (
+                          <button
+                            onClick={() => addToCart(product)}
+                            className="p-2 sm:p-2.5 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition-colors focus:outline-none shrink-0"
+                            title="Buy or Add to Cart"
+                          >
+                            <ShoppingCart className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

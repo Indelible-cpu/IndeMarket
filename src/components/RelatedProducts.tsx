@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, ShoppingCart, ArrowRight, RefreshCw, Zap } from 'lucide-react';
+import { Sparkles, ShoppingCart, ArrowRight, RefreshCw, Zap, Eye } from 'lucide-react';
 import { Product, mockProducts } from '../mockData';
 import { useAppContext } from '../store';
 import { WishlistButton } from './WishlistButton';
@@ -265,13 +265,23 @@ export function RelatedProducts({ currentProduct }: RelatedProductsProps) {
                     )}
                   </div>
 
-                  <button
-                    onClick={() => addToCart(product, 1)}
-                    className="p-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-xs transition-colors flex items-center gap-1 shadow-xs active:scale-95"
-                    title="Add to Cart"
-                  >
-                    <ShoppingCart className="w-3.5 h-3.5" />
-                  </button>
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <Link
+                      to={`/product/${product.id}`}
+                      className="px-2.5 py-2 bg-gray-100 hover:bg-indigo-50 text-gray-700 hover:text-indigo-600 rounded-xl text-xs font-bold flex items-center gap-1 transition-colors"
+                      title="View product images and details"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      <span>View</span>
+                    </Link>
+                    <button
+                      onClick={() => addToCart(product, 1)}
+                      className="p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-xs transition-colors flex items-center gap-1 shadow-xs active:scale-95"
+                      title="Buy or Add to Cart"
+                    >
+                      <ShoppingCart className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
