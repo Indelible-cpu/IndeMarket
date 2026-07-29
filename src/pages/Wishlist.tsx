@@ -5,6 +5,7 @@ import { useAppContext } from '../store';
 import { db } from '../lib/firebase';
 import { collection, query, where, getDocs, deleteDoc, doc, orderBy } from 'firebase/firestore';
 import toast from 'react-hot-toast';
+import { handleProductImageError, getProductFallbackImage } from '../lib/imageUtils';
 
 export function Wishlist() {
   const { user, addToCart, formatPrice } = useAppContext();
@@ -92,9 +93,11 @@ export function Wishlist() {
               <div key={item.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all group flex flex-col">
                 <div className="relative aspect-square overflow-hidden bg-gray-100">
                   <img
-                    src={product.images?.[0] || 'https://via.placeholder.com/300'}
+                    src={product.images?.[0] || getProductFallbackImage(product.id || product.name)}
                     alt={product.name}
+                    referrerPolicy="no-referrer"
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => handleProductImageError(e, product.id || product.name)}
                   />
                   {product.originalPrice && product.originalPrice > product.price && (
                     <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md">

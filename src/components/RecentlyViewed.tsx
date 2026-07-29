@@ -4,6 +4,7 @@ import { Clock, Star, ShieldCheck, ShoppingCart, Trash2, Eye } from 'lucide-reac
 import { useAppContext } from '../store';
 import { WishlistButton } from './WishlistButton';
 import { NotifyMeButton } from './NotifyMeButton';
+import { handleProductImageError, getProductFallbackImage } from '../lib/imageUtils';
 
 export interface RecentlyViewedItem {
   id: string;
@@ -87,12 +88,11 @@ export function RecentlyViewed() {
           >
             <div className="relative aspect-square overflow-hidden bg-gray-50">
               <img
-                src={product.images?.[0] || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'}
+                src={product.images?.[0] || getProductFallbackImage(product.id || product.name)}
                 alt={product.name}
+                referrerPolicy="no-referrer"
                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
-                onError={(e) => {
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80';
-                }}
+                onError={(e) => handleProductImageError(e, product.id || product.name)}
               />
               {product.stock === 0 && (
                 <div className="absolute top-2 left-2 bg-gray-900/90 text-white text-[9px] font-extrabold tracking-wider px-2 py-0.5 rounded-md backdrop-blur-xs">

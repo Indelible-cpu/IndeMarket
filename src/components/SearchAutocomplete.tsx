@@ -5,6 +5,7 @@ import { db } from '../lib/firebase';
 import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
 import { mockCategories, mockProducts, Product } from '../mockData';
 import { useAppContext } from '../store';
+import { handleProductImageError, getProductFallbackImage } from '../lib/imageUtils';
 
 interface SearchAutocompleteProps {
   placeholder?: string;
@@ -309,9 +310,10 @@ export function SearchAutocomplete({
                           <img 
                             src={cat.image} 
                             alt={cat.name} 
+                            referrerPolicy="no-referrer"
                             className="w-6 h-6 rounded-md object-cover bg-gray-100 shrink-0" 
                             onError={(e) => {
-                              e.currentTarget.src = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&q=80';
+                              e.currentTarget.src = `https://picsum.photos/seed/${encodeURIComponent(cat.name)}/400/400`;
                             }}
                           />
                           <span>In <span className="font-semibold">{highlightText(cat.name, trimmedTerm)}</span></span>
@@ -346,9 +348,11 @@ export function SearchAutocomplete({
                         }`}
                       >
                         <img
-                          src={product.images?.[0] || 'https://via.placeholder.com/60'}
+                          src={product.images?.[0] || getProductFallbackImage(product.id || product.name)}
                           alt={product.name}
+                          referrerPolicy="no-referrer"
                           className="w-11 h-11 rounded-lg object-cover bg-gray-100 shrink-0 border border-gray-100"
+                          onError={(e) => handleProductImageError(e, product.id || product.name)}
                         />
                         <div className="flex-1 min-w-0">
                           <div className="text-sm font-medium text-gray-900 truncate">

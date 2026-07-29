@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Product } from '../mockData';
 import { useAppContext } from '../store';
 import { Flame, Clock, ShoppingBag, ArrowRight } from 'lucide-react';
+import { handleProductImageError, getProductFallbackImage } from '../lib/imageUtils';
 
 interface FlashSaleProps {
   products: Product[];
@@ -89,10 +90,11 @@ export function FlashSaleSection({ products }: FlashSaleProps) {
               <div>
                 <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-50 mb-3">
                   <img
-                    src={product.images?.[0] || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'}
+                    src={product.images?.[0] || getProductFallbackImage(product.id || product.name)}
                     alt={product.name}
+                    referrerPolicy="no-referrer"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'; }}
+                    onError={(e) => handleProductImageError(e, product.id || product.name)}
                   />
                   <div className="absolute top-2 left-2 bg-rose-600 text-white text-[11px] font-extrabold px-2.5 py-1 rounded-lg shadow-sm">
                     -{discountPercent}% OFF

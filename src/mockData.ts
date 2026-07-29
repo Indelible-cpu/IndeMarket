@@ -47,17 +47,17 @@ export interface Category {
 }
 
 export const mockCategories: Category[] = [
-  { name: 'Electronics', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&q=80' },
-  { name: 'Fashion', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&q=80' },
-  { name: 'Home & Kitchen', image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&q=80' },
-  { name: 'Beauty', image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&q=80' },
-  { name: 'Sports', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&q=80' },
-  { name: 'Automotive', image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&q=80' },
-  { name: 'Books', image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&q=80' },
-  { name: 'Toys & Games', image: 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=400&q=80' },
-  { name: 'Health & Personal Care', image: 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=400&q=80' },
-  { name: 'Groceries', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80' },
-  { name: 'Phone Accessories', image: 'https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?w=400&q=80' },
+  { name: 'Electronics', image: 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=600&q=80' },
+  { name: 'Fashion', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=600&q=80' },
+  { name: 'Home & Kitchen', image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=600&q=80' },
+  { name: 'Beauty', image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&q=80' },
+  { name: 'Sports', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&q=80' },
+  { name: 'Automotive', image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80' },
+  { name: 'Books', image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&q=80' },
+  { name: 'Toys & Games', image: 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=600&q=80' },
+  { name: 'Health & Personal Care', image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80' },
+  { name: 'Groceries', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&q=80' },
+  { name: 'Phone Accessories', image: 'https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?w=600&q=80' },
 ];
 
 export const mockUsers: User[] = [

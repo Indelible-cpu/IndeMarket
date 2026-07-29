@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../store';
 import { X, Scale, Trash2, ShoppingBag, Star, CheckCircle2, AlertCircle } from 'lucide-react';
+import { handleProductImageError, getProductFallbackImage } from '../lib/imageUtils';
 
 export function ProductComparisonBar() {
   const { comparedProducts, removeFromCompare, clearCompare, formatPrice, addToCart } = useAppContext();
@@ -22,10 +23,11 @@ export function ProductComparisonBar() {
             {comparedProducts.map((p) => (
               <div key={p.id} className="relative group shrink-0">
                 <img
-                  src={p.images?.[0] || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'}
+                  src={p.images?.[0] || getProductFallbackImage(p.id || p.name)}
                   alt={p.name}
+                  referrerPolicy="no-referrer"
                   className="w-10 h-10 object-cover rounded-lg border border-gray-200"
-                  onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'; }}
+                  onError={(e) => handleProductImageError(e, p.id || p.name)}
                 />
                 <button
                   onClick={() => removeFromCompare(p.id)}
@@ -100,10 +102,11 @@ export function ProductComparisonBar() {
                         <X className="w-4 h-4" />
                       </button>
                       <img
-                        src={product.images?.[0] || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'}
+                        src={product.images?.[0] || getProductFallbackImage(product.id || product.name)}
                         alt={product.name}
+                        referrerPolicy="no-referrer"
                         className="w-16 h-16 object-cover rounded-xl border border-gray-200 mb-2"
-                        onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'; }}
+                        onError={(e) => handleProductImageError(e, product.id || product.name)}
                       />
                       <h4 className="text-sm font-bold text-gray-900 line-clamp-2">{product.name}</h4>
                     </div>

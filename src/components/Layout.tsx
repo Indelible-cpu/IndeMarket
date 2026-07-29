@@ -82,7 +82,7 @@ export function Layout() {
               </div>
             </div>
 
-            <Link to="/cart" className="relative p-2 text-gray-600 hover:text-indigo-600 transition-colors">
+            <Link to="/cart" className="hidden md:flex relative p-2 text-gray-600 hover:text-indigo-600 transition-colors">
               <ShoppingCart className="w-6 h-6" />
               {cartItemCount > 0 && (
                 <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full">
@@ -92,7 +92,7 @@ export function Layout() {
             </Link>
 
             {user ? (
-              <div className="relative group">
+              <div className="hidden md:block relative group">
                 <button className="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 transition-colors">
                   <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-semibold overflow-hidden">
                     {user.avatar ? (
@@ -133,7 +133,7 @@ export function Layout() {
             ) : (
               <Link
                 to="/login"
-                className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors"
+                className="hidden md:flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors"
               >
                 <User className="w-5 h-5" />
                 <span className="hidden sm:inline">Sign In</span>
@@ -169,22 +169,23 @@ export function Layout() {
             </div>
 
             {/* Mobile Currency Picker */}
-            <div className="pt-1 flex items-center justify-between">
+            <div className="pt-1 flex flex-col gap-2">
               <span className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
                 <Coins className="w-4 h-4 text-indigo-600" /> Currency
               </span>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
                 {Object.values(CURRENCIES).map((curr) => (
                   <button
                     key={curr.code}
                     onClick={() => setCurrency(curr.code)}
-                    className={`px-2 py-1 rounded-lg text-xs font-bold transition-all ${
+                    className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1 ${
                       currency === curr.code
                         ? 'bg-indigo-600 text-white shadow-xs'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
-                    {curr.code}
+                    <span>{curr.flag}</span>
+                    <span>{curr.code}</span>
                   </button>
                 ))}
               </div>
@@ -301,20 +302,15 @@ export function Layout() {
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="md:flex md:items-center md:justify-between">
-            <div className="flex justify-center md:justify-start mb-6 md:mb-0">
-              <span className="text-xl font-bold text-gray-900 tracking-tight">IndeMarket</span>
-            </div>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex justify-center space-x-6">
               <Link to="/about" className="text-sm text-gray-500 hover:text-gray-900">About</Link>
               <Link to="/support" className="text-sm text-gray-500 hover:text-gray-900">Support</Link>
               <Link to="/terms" className="text-sm text-gray-500 hover:text-gray-900">Terms</Link>
               <Link to="/privacy" className="text-sm text-gray-500 hover:text-gray-900">Privacy</Link>
             </div>
-          </div>
-          <div className="mt-8 border-t border-gray-100 pt-8 md:flex md:items-center md:justify-between">
-            <p className="text-base text-gray-400 text-center md:text-left">
-              &copy; 2026 IndeMarket. All rights reserved.
+            <p className="text-sm text-gray-400 text-center sm:text-right">
+              &copy; 2026. All rights reserved.
             </p>
           </div>
         </div>

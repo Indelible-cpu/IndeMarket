@@ -13,8 +13,10 @@ import { ProductReviewsSection } from '../components/ProductReviewsSection';
 import { PriceDropToggle } from '../components/PriceDropToggle';
 import { ShareButtons } from '../components/ShareButtons';
 import { ProductQuestionsAndAnswers } from '../components/ProductQuestionsAndAnswers';
+import { RelatedProducts } from '../components/RelatedProducts';
 import { SpecGuideModal } from '../components/SpecGuideModal';
 import { Ruler } from 'lucide-react';
+import { handleProductImageError, getProductFallbackImage } from '../lib/imageUtils';
 
 export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -207,16 +209,15 @@ export function ProductDetail() {
             >
               <div className="relative w-full aspect-square overflow-hidden rounded-xl flex items-center justify-center">
                 <img
-                  src={product.images?.[activeImageIndex] || product.images?.[0] || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'}
+                  src={product.images?.[activeImageIndex] || product.images?.[0] || getProductFallbackImage(product.id || product.name)}
                   alt={product.name}
+                  referrerPolicy="no-referrer"
                   style={{
                     transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
                     transform: isZoomed ? 'scale(2.4)' : 'scale(1.0)',
                   }}
                   className="w-full h-full object-cover transition-transform duration-150 ease-out pointer-events-none"
-                  onError={(e) => {
-                    e.currentTarget.src = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80';
-                  }}
+                  onError={(e) => handleProductImageError(e, product.id || product.name)}
                 />
               </div>
 
@@ -265,10 +266,9 @@ export function ProductDetail() {
                       <img
                         src={img}
                         alt={`${product.name} thumbnail ${idx + 1}`}
+                        referrerPolicy="no-referrer"
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-115 ease-out"
-                        onError={(e) => {
-                          e.currentTarget.src = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80';
-                        }}
+                        onError={(e) => handleProductImageError(e, `${product.id}-${idx}`)}
                       />
                       <div className={`absolute inset-0 bg-indigo-900/10 transition-opacity ${isActive ? 'opacity-0' : 'group-hover:opacity-0'}`} />
                     </button>
@@ -424,6 +424,9 @@ export function ProductDetail() {
           </div>
         </div>
       </div>
+
+      {/* Gemini API Related Products Suggestions */}
+      <RelatedProducts currentProduct={product} />
 
       {/* Product Reviews & Ratings Section */}
       <ProductReviewsSection

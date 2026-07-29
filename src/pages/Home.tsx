@@ -8,6 +8,7 @@ import { db } from '../lib/firebase';
 import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
 
 import { injectMockData } from '../lib/mockDataService';
+import { handleProductImageError, getProductFallbackImage } from '../lib/imageUtils';
 
 import { WishlistButton } from '../components/WishlistButton';
 import { NotifyMeButton } from '../components/NotifyMeButton';
@@ -112,9 +113,10 @@ export function Home() {
                 <img 
                   src={category.image} 
                   alt={category.name} 
+                  referrerPolicy="no-referrer"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => {
-                    e.currentTarget.src = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&q=80';
+                    e.currentTarget.src = `https://picsum.photos/seed/${encodeURIComponent(category.name)}/400/400`;
                   }}
                 />
               </div>
@@ -152,12 +154,11 @@ export function Home() {
               <div key={product.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all group flex flex-col">
                 <div className="relative aspect-square overflow-hidden bg-gray-100">
                   <img
-                    src={product.images?.[0] || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'}
+                    src={product.images?.[0] || getProductFallbackImage(product.id || product.name)}
                     alt={product.name}
+                    referrerPolicy="no-referrer"
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80';
-                    }}
+                    onError={(e) => handleProductImageError(e, product.id || product.name)}
                   />
                   {product.stock === 0 ? (
                     <div className="absolute top-3 left-3 bg-gray-900/90 text-white text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-md backdrop-blur-sm">

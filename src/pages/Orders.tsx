@@ -6,6 +6,7 @@ import { db } from '../lib/firebase';
 import { collection, query, where, orderBy, onSnapshot, updateDoc, doc } from 'firebase/firestore';
 import { OrderTrackingVisualization } from '../components/OrderTrackingVisualization';
 import toast from 'react-hot-toast';
+import { handleProductImageError, getProductFallbackImage } from '../lib/imageUtils';
 
 export function Orders() {
   const { user, formatPrice } = useAppContext();
@@ -150,10 +151,11 @@ export function Orders() {
                   <div key={idx} className="flex gap-4">
                     <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden shrink-0">
                       <img
-                        src={item.image || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'}
+                        src={item.image || getProductFallbackImage(item.productId || item.name || 'order-item')}
                         alt={item.name}
+                        referrerPolicy="no-referrer"
                         className="w-full h-full object-cover"
-                        onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'; }}
+                        onError={(e) => handleProductImageError(e, item.productId || item.name || 'order-item')}
                       />
                     </div>
                     <div className="flex-1">

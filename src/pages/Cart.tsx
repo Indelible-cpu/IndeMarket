@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, ArrowRight, ShieldAlert, Bookmark, Ticket, Check, X, Truck, ShoppingCart } from 'lucide-react';
 import { useAppContext, AVAILABLE_PROMOS } from '../store';
+import { handleProductImageError, getProductFallbackImage } from '../lib/imageUtils';
 
 export function Cart() {
   const {
@@ -97,10 +98,11 @@ export function Cart() {
                 <div key={item.product.id} className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6 items-start sm:items-center">
                   <Link to={`/product/${item.product.id}`} className="block w-full sm:w-24 h-24 shrink-0 bg-gray-50 rounded-xl overflow-hidden relative group">
                     <img
-                      src={item.product.images?.[0] || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'}
+                      src={item.product.images?.[0] || getProductFallbackImage(item.product.id || item.product.name)}
                       alt={item.product.name}
+                      referrerPolicy="no-referrer"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                      onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'; }}
+                      onError={(e) => handleProductImageError(e, item.product.id || item.product.name)}
                     />
                   </Link>
                   
@@ -171,10 +173,11 @@ export function Cart() {
                 {savedForLater.map((item) => (
                   <div key={item.product.id} className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex gap-4 items-center">
                     <img
-                      src={item.product.images?.[0] || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'}
+                      src={item.product.images?.[0] || getProductFallbackImage(item.product.id || item.product.name)}
                       alt={item.product.name}
+                      referrerPolicy="no-referrer"
                       className="w-16 h-16 object-cover rounded-xl border border-gray-200 shrink-0"
-                      onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80'; }}
+                      onError={(e) => handleProductImageError(e, item.product.id || item.product.name)}
                     />
                     <div className="flex-1 min-w-0">
                       <h4 className="font-bold text-sm text-gray-900 truncate">{item.product.name}</h4>

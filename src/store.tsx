@@ -15,10 +15,11 @@ export interface CurrencyInfo {
 
 export const CURRENCIES: Record<string, CurrencyInfo> = {
   MWK: { code: 'MWK', name: 'Malawian Kwacha', symbol: 'MWK ', rate: 1.0, flag: '🇲🇼' },
+  ZMW: { code: 'ZMW', name: 'Zambian Kwacha', symbol: 'ZMW ', rate: 0.0155, flag: '🇿🇲' },
+  ZAR: { code: 'ZAR', name: 'South African Rand', symbol: 'R ', rate: 0.0105, flag: '🇿🇦' },
   USD: { code: 'USD', name: 'US Dollar', symbol: '$', rate: 0.00057, flag: '🇺🇸' },
   EUR: { code: 'EUR', name: 'Euro', symbol: '€', rate: 0.00052, flag: '🇪🇺' },
   GBP: { code: 'GBP', name: 'British Pound', symbol: '£', rate: 0.00045, flag: '🇬🇧' },
-  ZAR: { code: 'ZAR', name: 'SA Rand', symbol: 'R', rate: 0.0105, flag: '🇿🇦' },
 };
 
 export interface PromoCode {
